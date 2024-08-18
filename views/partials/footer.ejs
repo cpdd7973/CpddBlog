@@ -1,5 +1,6 @@
 <footer class="bg-dark mt-5">
-    <div class="footer-copyright text-center py-3 text-white">© 2020 Copyright:
-        <a href="/"> CpddBlogs.com</a>
+    <div class="footer-copyright text-center py-3 text-white">
+        © <%= new Date().getFullYear() %> Copyright:
+        <a href="<%= req.protocol + '://' + req.get('host') %>">CPDD Blogs</a>
     </div>
 </footer>
