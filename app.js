@@ -29,6 +29,14 @@ app.get('/', (req, res) => {
 
 app.use('/blogs', blogRoutes);
 
+app.get('/about', (req, res) => {
+    res.render('about', { 
+        title: 'About Us',
+        req: req  // Pass the req object to the template
+    });
+});
+
+
 // 404 page
 app.use((req, res) => {
     res.status(404).render('404', { title: '404', req: req });
