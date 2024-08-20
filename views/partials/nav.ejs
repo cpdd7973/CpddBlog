@@ -1,21 +1,39 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">CpddBlogs</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/blogs/create">New Blog</a>
-          </li>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">CpddBlogs</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarNav">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/blogs">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blogs/create">New Blog</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
+<script>
+  // Get the current path of the page
+  const currentPath = window.location.pathname;
+
+  // Select all nav-link elements
+  document.querySelectorAll('.nav-link').forEach(function(navLink) {
+    // Check if the href of the link matches the current path
+    if (navLink.getAttribute('href') === currentPath) {
+      // Add the 'active' class to the matching link
+      navLink.classList.add('active');
+    } else {
+      // Remove the 'active' class from non-matching links (optional)
+      navLink.classList.remove('active');
+    }
+  });
+</script>
