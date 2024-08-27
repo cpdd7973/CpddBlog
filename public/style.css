@@ -1,0 +1,38 @@
+nav {
+  position: sticky;
+  top: 0;
+}
+
+.navbar-brand img {
+  width: 140px;
+}
+
+.footer-copyright img {
+  width: 100px;
+}
+
+.footer-copyright {
+  color: #0e5ddd;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2rem;
+  margin: 0 auto;
+  border-radius: 8px;
+  width: 360px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-icon {
+  text-align: center;
+  display: block;
+}
+
+.nav-link {
+  border-bottom: 3px solid transparent;
+}
+
+.nav-link.active {
+  border-color: #f98f7c;
+}

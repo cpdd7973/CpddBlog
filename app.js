@@ -21,6 +21,7 @@ app.set('view engine', 'ejs');
 // Middleware & static files
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(express.static('public'));
 
 // Routes
 app.get('/', (req, res) => {
@@ -28,6 +29,14 @@ app.get('/', (req, res) => {
 });
 
 app.use('/blogs', blogRoutes);
+
+app.get('/login', (req, res) => {
+    res.render('authentication/login', { title: 'Login', req: req });
+});
+
+app.get('/register', (req, res) => {
+    res.render('authentication/signup', { title: 'Register', req: req });
+});
 
 app.get('/about', (req, res) => {
     res.render('about', { 
