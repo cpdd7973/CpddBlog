@@ -35,7 +35,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
-  cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS in production
+    httpOnly: true, // Prevent access via JavaScript
+    sameSite: 'Lax' // Prevent CSRF attacks
+  }
 }));
 
 app.use((req, res, next) => {
