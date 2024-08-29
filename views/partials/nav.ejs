@@ -1,43 +1,47 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><img src="/assets/cpdd-blog-logo-V2.svg" alt="cpdd blog logo" /></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarNav">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/blogs">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/blogs/create">New Blog</a>
-        </li>
-      </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><img src="/assets/cpdd-blog-logo-V2.svg" alt="cpdd blog logo" /></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarNav">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/blogs">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/blogs/create">New Blog</a>
+          </li>
+        </ul>
+        <div class="d-flex gap-3" role="search">
+          <% if (typeof user !== 'undefined' && user) { %>
+            <!-- Display profile icon if user is logged in -->
+            <div class="dropdown">
+              <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/assets/profile-icon.png" alt="Profile Icon" width="40" height="40">
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+              </ul>
+            </div>
+          <% } else { %>
+            <!-- Display login and register links if user is not logged in -->
+            <a href="/login" class="btn btn-outline-primary">Login/Signup</a>
+          <% } %>
+        </div>
+      </div>
     </div>
-    <div class="d-flex gap-3" role="search">
-      <a href="/login" class="btn btn-outline-primary">Login</a>
-      <a href="/register" class="btn btn-outline-success">SignUp</a>
-    </div>
-  </div>
-</nav>
-
-<script>
-  // Get the current path of the page
-  const currentPath = window.location.pathname;
-
-  // Select all nav-link elements
-  document.querySelectorAll('.nav-link').forEach(function(navLink) {
-    // Check if the href of the link matches the current path
-    if (navLink.getAttribute('href') === currentPath) {
-      // Add the 'active' class to the matching link
-      navLink.classList.add('active');
-    } else {
-      // Remove the 'active' class from non-matching links (optional)
-      navLink.classList.remove('active');
-    }
-  });
-</script>
+  </nav>
+</body>
+</html>

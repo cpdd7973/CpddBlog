@@ -8,7 +8,9 @@
         <img src="/assets/icon-cpdd-blog.svg" alt="cpdd blog icon" width="80" height="80">
       </picture>
       <h2 class="text-center mb-4">Login</h2>
-      <form action="/login" method="POST">
+      <div id="errorMessages" class="alert alert-danger mt-3 d-none"></div>
+      <div id="successMessage" class="alert alert-success mt-3 d-none"></div>
+      <form id="loginForm" action="/login" method="POST">
         <div class="mb-3">
           <label for="email" class="form-label">Email address</label>
           <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
@@ -25,9 +27,10 @@
         <p>Don't have an account? <a href="/register">Sign up</a></p>
       </div>
     </div>
-    <%- include('../partials/footer.ejs')%>
+    <%- include('../partials/footer.ejs') %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"></script>
+    <script src="/js/login.js"></script>
   </body>
 </html>

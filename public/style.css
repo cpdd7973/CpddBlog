@@ -36,3 +36,8 @@ nav {
 .nav-link.active {
   border-color: #f98f7c;
 }
+
+.dropdown .dropdown-toggle {
+  border: none;
+  background: transparent;
+}
