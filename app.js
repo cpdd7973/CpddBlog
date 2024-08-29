@@ -9,6 +9,9 @@ const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
 
+// Trust the proxy
+app.set('trust proxy', true);
+
 // Connect to MongoDB
 const dbURI = process.env.DATABASE_URL;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
