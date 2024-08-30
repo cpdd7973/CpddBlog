@@ -63,3 +63,9 @@ svg.upload-overlay-svg {
     border-color: #f98f7c;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .navbar-brand img {
+    width: 120px;
+  }
+}
