@@ -32,7 +32,8 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(express.json());
 
-// Session middleware
+// Session middleware Production
+app.set('trust proxy', true);
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
   resave: false,
@@ -45,14 +46,17 @@ app.use(session({
   }
 }));
 
-app.use((req, res, next) => {
-  res.locals.user = req.session.user || null; // Define `user` in res.locals
-  next();
-});
+// Development session
+// app.use(session({
+//   secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
+//   resave: false,
+//   saveUninitialized: false,
+//   store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
+//   cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
+// }));
 
 app.use((req, res, next) => {
-  console.log('Session ID:', req.session.id);
-  console.log('Session User:', req.session.user);
+  res.locals.user = req.session.user || null; // Define `user` in res.locals
   next();
 });
 

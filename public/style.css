@@ -33,11 +33,33 @@ nav {
   border-bottom: 3px solid transparent;
 }
 
-.nav-link.active {
-  border-color: #f98f7c;
+#avatarInput, #avatarInputOverlay, svg.upload-overlay-svg {
+  display: none;
+}
+
+svg.upload-overlay-svg {
+  fill: #0e5ddd;
+}
+
+#avatarInputOverlay {
+  background-color: #0e5ddd;
+  opacity: 0.2;
+}
+
+.avatar-wrapper:hover #avatarInputOverlay {
+  display: inline-block;
+}
+.avatar-wrapper:hover svg.upload-overlay-svg {
+  display: inline;
 }
 
 .dropdown .dropdown-toggle {
   border: none;
   background: transparent;
+}
+
+@media screen and (min-width: 990px) {
+  .nav-link.active {
+    border-color: #f98f7c;
+  }
 }

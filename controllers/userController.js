@@ -1,8 +1,30 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const User = require('../models/user'); // Adjust the path to your User model
+const { param } = require('../routes/blogRoutes');
 
 const JWT_SECRET = process.env.JWT_SECRET; // Store your JWT secret in environment variables
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Set up Multer storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'avatars', // Folder name in Cloudinary
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+const upload = multer({ storage: storage });
 
 exports.loginUser = async (req, res) => {
   try {
@@ -63,7 +85,6 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    
     // Check if passwords match
     if (password !== confirmPassword) {
       return res.status(400).json({ error: 'Passwords do not match.' });
@@ -162,3 +183,33 @@ exports.updateUserBio = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// Controller function to upload avatar
+exports.uploadAvatar = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'avatars', // Optional: specify a folder in your Cloudinary account
+      transformation: [{ width: 500, height: 500, crop: 'limit' }] // Optional: apply transformations like resizing
+    });
+
+    // Update user's avatar field with the Cloudinary URL
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatar: result.secure_url },
+      { new: true } // Return the updated document
+    );
+    req.session.user.avatar = result.secure_url || null;
+    res.status(200).json({
+      message: 'Avatar uploaded successfully!',
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error('Error uploading avatar:', error);
+    res.status(500).json({ message: 'Failed to upload avatar' });
+  }
+};
+
+exports.upload = upload;

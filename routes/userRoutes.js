@@ -14,4 +14,7 @@ router.get('/logout', authController.logoutUser);
 // Route to update user's bio
 router.patch('/:id/bio', authController.updateUserBio);
 
+// Route to upload user's avatar
+router.post('/:id/upload-avatar', authController.upload.single('avatar'), authController.uploadAvatar);
+
 module.exports = router;
