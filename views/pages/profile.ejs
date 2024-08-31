@@ -3,9 +3,14 @@
   <%- include('../partials/head.ejs') %>
   <body>
     <%- include('../partials/nav.ejs', { user: user }) %>
-    <!-- <%- JSON.stringify(user, null, 2) %> -->
-    <div class="profile-container mt-5 container">
-      <div class="row">
+    <div class="profile-container container">
+      <div class="user-conver-photo-wrapper position-relative d-flex justify-content-center align-items-center">
+        <img srcset="/assets/DisplayOnrender-mobile.webp 768w, /assets/DisplayOnrender-desktop.webp" sizes="(max-width: 768px) 768px" src="/assets/DisplayOnrender-desktop.webp" alt="default cover image"/>
+        <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
+        <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0"></span>
+        <input type="file" id="coverImageInput" name="coverImage" accept="image/*">
+      </div>
+      <div class="row mt-3">
         <div class="col-md-4 text-center">
           <picture class="d-inline-flex align-items-center justify-content-center position-relative avatar-wrapper">
             <img src="<%= user.avatar %>" alt="Profile Picture" class="img-thumbnail border-0" width="150" height="150">
@@ -83,15 +88,22 @@
         }
       });
 
-      const avatarInput = document.getElementById('avatarInput'); // Input element for avatar upload
-      async function uploadAvatar() {
+      const avatarInput = document.getElementById('avatarInput');
+      const coverInput = document.getElementById('coverImageInput');
+      async function uploadUserAsset(item) {
         // Check if a file is selected
-        if (avatarInput.files.length > 0) {
+        if (avatarInput.files.length > 0 || coverInput.files.length > 0) {
           const formData = new FormData();
-          formData.append('avatar', avatarInput.files[0]);
-
+          let url;
+          if (item === "avatar") {
+            formData.append('avatar', avatarInput.files[0]);
+            url = `/user/${userId}/upload-avatar`;
+          } else {
+            formData.append('coverPhoto', coverInput.files[0]);
+            url = `/user/${userId}/upload-cover-image`;
+          }
           try {
-            const avatarResponse = await fetch(`/user/${userId}/upload-avatar`, {
+            const avatarResponse = await fetch(url, {
               method: 'POST',
               body: formData,
             });
@@ -106,20 +118,28 @@
             alert(avatarResult.message); // Notify the user of success
             location.reload();
           } catch (error) {
-            console.error('Error uploading avatar:', error);
-            alert('An error occurred while uploading the avatar');
+            console.error('Error uploading avatar/coverImage:', error);
+            alert('An error occurred while uploading the avatar/coverImage');
           }
         }
       }
 
       document.querySelectorAll("#avatarInputOverlay, .upload-overlay-svg").forEach(element => {
-        element.addEventListener("click", function() {
-          document.getElementById('avatarInput').click();
+        element.addEventListener("click", function(e) {
+          if (e.target.parentElement.classList.value.includes("user-conver-photo-wrapper")) {
+            coverInput.click();
+            console.log("cover");
+          } else {
+            avatarInput.click();
+          }
         });
       });
 
       avatarInput.addEventListener("change", function(){
-        uploadAvatar()
+        uploadUserAsset("avatar");
+      })
+      coverInput.addEventListener("change", function(){
+        uploadUserAsset("cover");
       })
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

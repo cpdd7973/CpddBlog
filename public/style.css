@@ -33,7 +33,7 @@ nav {
   border-bottom: 3px solid transparent;
 }
 
-#avatarInput, #avatarInputOverlay, svg.upload-overlay-svg {
+#avatarInput, #avatarInputOverlay, svg.upload-overlay-svg, #coverImageInput {
   display: none;
 }
 
@@ -46,16 +46,20 @@ svg.upload-overlay-svg {
   opacity: 0.2;
 }
 
-.avatar-wrapper:hover #avatarInputOverlay {
+.avatar-wrapper:hover #avatarInputOverlay, .user-conver-photo-wrapper:hover #avatarInputOverlay {
   display: inline-block;
 }
-.avatar-wrapper:hover svg.upload-overlay-svg {
+.avatar-wrapper:hover svg.upload-overlay-svg, .user-conver-photo-wrapper:hover svg.upload-overlay-svg {
   display: inline;
 }
 
 .dropdown .dropdown-toggle {
   border: none;
   background: transparent;
+}
+
+.user-conver-photo-wrapper img {
+  width: 100%;
 }
 
 @media screen and (min-width: 990px) {

@@ -38,6 +38,10 @@ const userSchema = new Schema({
     maxlength: 500, // Adjust the maximum length as needed
     default: null  // Set default value to null
   },
+  rank: {
+    type: String,
+    default: 'Beginner' // Default rank or define it based on your logic
+  },
   coverPhoto: {
     type: String, // URL or path to the cover photo image
     default: '/assets/default-cover.png' // Default cover photo if none is provided

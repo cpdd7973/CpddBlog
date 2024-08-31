@@ -1,31 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head.ejs') %>
+  <%- include('../partials/head.ejs') %>
   <body>
     <%- include('../partials/nav.ejs') %>
-      <div class="create-blog m-5">
-        <form action="/blogs" method="POST" class="px-5 d-flex flex-column justify-content-center">
-          <div class="form-floating mb-3 mt-5">
-            <input type="text" name="title" class="form-control" placeholder="Title" id="title" required>
-            <label for="title">Blog Title</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="snippet" name="snippet" placeholder="Snippet" required>
-            <label for="snippet">Blog Snippet</label>
-          </div>
-          <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Leave a comment here" id="body" name="body"
-              style="height: 100px" required></textarea>
-            <label for="body">Blog Body</label>
-          </div>
-          <div class="w-100 d-flex justify-content-center">
-            <button type="submit" class="btn btn-danger w-25 fw-bold mb-3">Submit</button>
-          </div>
-        </form>
-      </div>
-      <%- include('../partials/footer.ejs') %>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-          crossorigin="anonymous"></script>
+    <div class="create-blog container mt-5">
+      <h2>Blog Page</h2>
+      <form action="/blogs" method="POST" id="createBlogForm" class="d-flex flex-column justify-content-center">
+        <div class="form-floating mb-3 mt-5">
+          <input type="text" name="title" class="form-control" placeholder="Title" id="blogTitle" required>
+          <label for="title">Blog Title</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="blogSnippet" name="snippet" placeholder="Snippet" required>
+          <label for="snippet">Blog Snippet</label>
+        </div>
+        <div class="form-floating mb-3">
+          <textarea class="form-control" placeholder="Leave a comment here" id="blogBody" name="body"
+            style="height: 100px" required></textarea>
+          <label for="body">Blog Body</label>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+          <button type="submit" class="btn btn-danger w-25 fw-bold mb-3">Submit</button>
+        </div>
+      </form>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+    <script>
+      let userId  = '<%= user.id %>';
+      let username = '<%= user.username %>';
+      let userRank = '<%= user.rank %>';
+      let userAvatar = '<%= user.avatar %>';
+      
+      document.getElementById("createBlogForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        let title = document.getElementById('blogTitle').value;
+        let snippet = document.getElementById('blogSnippet').value;
+        let body = document.getElementById('blogBody').value;
+        
+        const blogData = {
+          title: title,
+          snippet: snippet,
+          body: body,
+          author: {
+            _id: userId,
+            username: username,
+            rank: userRank,
+            avatar: userAvatar,
+          }
+        };
+    
+        try {
+          const response = await fetch(`/blogs/createpost`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(blogData),
+          });
+    
+          if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            window.location.pathname = "/blogs";
+          } else {
+            const error = await response.json();
+            alert(error.message);
+          }
+        } catch (error) {
+          console.error('Error creating blog:', error);
+          alert('An error occurred while creating the blog.');
+        }
+      });
+    </script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>
 </html>

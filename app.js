@@ -33,7 +33,6 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Session middleware Production
-app.set('trust proxy', true);
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
   resave: false,

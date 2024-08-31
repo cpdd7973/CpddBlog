@@ -10,13 +10,13 @@
     <div class="content">
       <p><%= blog.body %></p>
     </div>
-    <a class="delete bg-danger text-decoration-none text-white px-3 py-1 rounded fw-bolder" data-doc="<%= blog._id %>">Delete</a>
+    <button class="delete bg-danger text-decoration-none text-white px-3 py-1 rounded fw-bolder" data-doc="<%= blog._id %>">Delete</button>
   </div>
 
   <%- include("../partials/footer.ejs") %>
 
   <script>
-    const trashcan = document.querySelector('a.delete');
+    const trashcan = document.querySelector('button.delete');
 
     trashcan.addEventListener('click', (e) => {
       const endpoint = `/blogs/${trashcan.dataset.doc}`;

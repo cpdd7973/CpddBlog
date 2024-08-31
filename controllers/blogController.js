@@ -10,7 +10,7 @@ const blog_index = async (req, res) => {
     res.render('blogs/index', {
       title: 'All Blogs',
       blogs: blogs,
-      user: user,  // Pass user info to the view
+      user: user,
       req: req
     });
   } catch (err) {
@@ -52,12 +52,17 @@ const blog_create_get = (req, res) => {
 // Create a new blog post
 const blog_create_post = async (req, res) => {
   try {
+    if (!req.session.user) {
+      return res.status(401).json({ message: 'Unauthorized' }); // Handle unauthorized access
+    }
+
     const blog = new Blog(req.body);
+    console.log(blog);
     await blog.save();
-    res.redirect('/blogs');
+    res.status(200).json({ message: 'Blog post created successfully!' });
   } catch (err) {
     console.log(err);
-    res.status(500).send('Internal Server Error'); // Handle errors properly
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 

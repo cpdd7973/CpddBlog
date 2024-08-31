@@ -4,7 +4,6 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const User = require('../models/user'); // Adjust the path to your User model
-const { param } = require('../routes/blogRoutes');
 
 const JWT_SECRET = process.env.JWT_SECRET; // Store your JWT secret in environment variables
 
@@ -16,15 +15,25 @@ cloudinary.config({
 });
 
 // Set up Multer storage for Cloudinary
-const storage = new CloudinaryStorage({
+const storageAvatar = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'avatars', // Folder name in Cloudinary
-    allowed_formats: ['jpg', 'png', 'jpeg'],
+    folder: 'avatars',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webep'],
   },
 });
 
-const upload = multer({ storage: storage });
+const uploadAvatarMulter = multer({ storage: storageAvatar });
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'coverImages',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+  },
+});
+
+const uploadCoverImageMulter = multer({ storage: storage });
 
 exports.loginUser = async (req, res) => {
   try {
@@ -54,6 +63,7 @@ exports.loginUser = async (req, res) => {
     req.session.user = {
       id: user._id,
       username: user.username,
+      rank: user.rank,
       email: user.email,
       avatar: user.avatar,
       bio: user.bio,
@@ -184,7 +194,6 @@ exports.updateUserBio = async (req, res) => {
   }
 };
 
-// Controller function to upload avatar
 exports.uploadAvatar = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -212,4 +221,60 @@ exports.uploadAvatar = async (req, res) => {
   }
 };
 
-exports.upload = upload;
+exports.uploadCoverImage = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    
+    // Check if the file is provided
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // Upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'coverImages', // Optional: specify a folder in your Cloudinary account
+    });
+
+    // Update user's coverPhoto field with the Cloudinary URL
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { coverPhoto: result.secure_url },
+      { new: true }
+    );
+
+    // Check if the user was found and updated
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update the session user data with the new cover photo URL
+    req.session.user.coverPhoto = updatedUser.coverPhoto;
+
+    res.status(200).json({
+      message: 'Cover photo uploaded successfully!',
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error('Error uploading cover photo:', error);
+    res.status(500).json({ message: 'Failed to upload cover photo' });
+  }
+};
+
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId).select('-password'); // Exclude password from the result
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.uploadAvatarMulter = uploadAvatarMulter;
+exports.uploadCoverImageMulter = uploadCoverImageMulter;
