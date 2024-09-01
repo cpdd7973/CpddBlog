@@ -5,21 +5,18 @@
     <%- include('../partials/nav.ejs') %>
     <div class="blogs m-5">
       <h2 class="text-center mb-5">All Blogs</h2>
-      <!-- <div class="d-flex gap-4 flex-wrap"> -->
       <div class="blog-listing-wrapper">
         <% if(blogs.length > 0 ){ %>
           <%  blogs.forEach(blog => { %>
-            <!-- <div class="mb-5 text-left mx-5"> -->
-              <a class="text-dark text-decoration-none blog-listing-item" href="/blogs/<%= blog._id %>">
-                <div class="card" style="width: 18rem;">
-                  <img src="<%= blog.coverImage %>" class="card-img-top" alt="blog cover image">
-                  <div class="card-body">
-                    <h5 class="card-title"><%= blog.title %></h5>
-                    <p class="card-text" title="<%= blog.snippet %>"><%= blog.snippet %></p>
-                  </div>
+            <a class="text-dark text-decoration-none blog-listing-item" href="/blogs/<%= blog._id %>">
+              <div class="card" style="width: 18rem;">
+                <img src="<%= blog.coverImage %>" class="card-img-top" alt="blog cover image">
+                <div class="card-body">
+                  <h5 class="card-title"><%= blog.title %></h5>
+                  <p class="card-text" title="<%= blog.snippet %>"><%= blog.snippet %></p>
                 </div>
-              </a>
-            <!-- </div> -->
+              </div>
+            </a>
           <% }) %>
         <% } else { %>
           <p class="text-danger">OOP's, There are no blogs to display</p>
