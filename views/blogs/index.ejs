@@ -10,7 +10,7 @@
           <%  blogs.forEach(blog => { %>
             <a class="text-dark text-decoration-none blog-listing-item" href="/blogs/<%= blog._id %>">
               <div class="card" style="width: 18rem;">
-                <img src="<%= blog.coverImage %>" class="card-img-top" alt="blog cover image">
+                <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
                 <div class="card-body">
                   <h5 class="card-title"><%= blog.title %></h5>
                   <p class="card-text" title="<%= blog.snippet %>"><%= blog.snippet %></p>

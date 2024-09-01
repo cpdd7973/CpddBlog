@@ -92,7 +92,7 @@ const blog_create_post = async (req, res) => {
     // Create the blog post object
     const blog = new Blog({
       ...req.body,
-      coverImage: coverImageUrl,
+      blogCoverImage: coverImageUrl,
     });
 
     await blog.save();
