@@ -39,11 +39,39 @@ nav {
 
 svg.upload-overlay-svg {
   fill: #0e5ddd;
+  /* mix-blend-mode: difference; */
 }
 
 #avatarInputOverlay {
   background-color: #0e5ddd;
   opacity: 0.2;
+}
+
+.avatar-wrapper {
+  top: -75px;
+  flex: none;
+}
+
+.blog-listing-wrapper {
+  column-count: 4;
+  column-gap: 10px;
+}
+
+.blog-listing-item {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin-bottom: 10px;
+  break-inside: avoid;
+}
+
+.user-info-wrapper {
+  position: relative;
+  top: -75px;
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 2px 4px;
+  border-radius: 8px;
 }
 
 .avatar-wrapper:hover #avatarInputOverlay, .user-conver-photo-wrapper:hover #avatarInputOverlay {
@@ -60,6 +88,7 @@ svg.upload-overlay-svg {
 
 .user-conver-photo-wrapper img {
   width: 100%;
+  max-height: 200px;
 }
 
 @media screen and (min-width: 990px) {

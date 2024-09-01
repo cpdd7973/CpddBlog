@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head.ejs') %>
-<body>
-      <%- include('../partials/nav.ejs') %>
-      <div class="blogs m-5">
-          <h2 class="text-center mb-5">All Blogs</h2>
-          <% if(blogs.length > 0 ){ %>
-            <%  blogs.forEach(blog => { %>
-              <div class="border-start border-5 border-danger mb-5 text-left mx-5 ps-4">
-                <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
-                  <h3><%= blog.title %></h3>
-                  <p><%= blog.snippet %></p>
-                </a>
-              </div>
-            <% }) %>
-          <% } else { %>
-            <p class="text-danger">OOP's, There are no blogs to display</p>
-            <% } %>
+  <%- include('../partials/head.ejs') %>
+  <body>
+    <%- include('../partials/nav.ejs') %>
+    <div class="blogs m-5">
+      <h2 class="text-center mb-5">All Blogs</h2>
+      <!-- <div class="d-flex gap-4 flex-wrap"> -->
+      <div class="blog-listing-wrapper">
+        <% if(blogs.length > 0 ){ %>
+          <%  blogs.forEach(blog => { %>
+            <!-- <div class="mb-5 text-left mx-5"> -->
+              <a class="text-dark text-decoration-none blog-listing-item" href="/blogs/<%= blog._id %>">
+                <div class="card" style="width: 18rem;">
+                  <img src="<%= blog.coverImage %>" class="card-img-top" alt="blog cover image">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= blog.title %></h5>
+                    <p class="card-text" title="<%= blog.snippet %>"><%= blog.snippet %></p>
+                  </div>
+                </div>
+              </a>
+            <!-- </div> -->
+          <% }) %>
+        <% } else { %>
+          <p class="text-danger">OOP's, There are no blogs to display</p>
+        <% } %>
       </div>
-      <%- include('../partials/footer.ejs')%>
+    </div>
+    <%- include('../partials/footer.ejs')%>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
+  </body>
 </html>

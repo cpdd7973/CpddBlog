@@ -15,7 +15,7 @@ cloudinary.config({
 });
 
 // Set up Multer storage for Cloudinary
-const storageAvatar = new CloudinaryStorage({
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'avatars',
@@ -23,17 +23,7 @@ const storageAvatar = new CloudinaryStorage({
   },
 });
 
-const uploadAvatarMulter = multer({ storage: storageAvatar });
-
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'coverImages',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
-  },
-});
-
-const uploadCoverImageMulter = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
 exports.loginUser = async (req, res) => {
   try {
@@ -221,42 +211,38 @@ exports.uploadAvatar = async (req, res) => {
   }
 };
 
-exports.uploadCoverImage = async (req, res) => {
+exports.updateCoverPhoto = async (req, res) => {
   try {
     const userId = req.params.id;
-    
-    // Check if the file is provided
+
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    // Upload the image to Cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'coverImages', // Optional: specify a folder in your Cloudinary account
+      folder: 'coverPhotos',
     });
 
-    // Update user's coverPhoto field with the Cloudinary URL
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { coverPhoto: result.secure_url },
-      { new: true }
+      { new: true, runValidators: true }
     );
 
-    // Check if the user was found and updated
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update the session user data with the new cover photo URL
+    // Update session data
     req.session.user.coverPhoto = updatedUser.coverPhoto;
 
     res.status(200).json({
-      message: 'Cover photo uploaded successfully!',
-      user: req.session.user
+      message: 'Cover photo updated successfully!',
+      user: req.session.user,
     });
   } catch (error) {
-    console.error('Error uploading cover photo:', error);
-    res.status(500).json({ message: 'Failed to upload cover photo' });
+    console.error('Error updating cover photo:', error);
+    res.status(500).json({ message: 'Failed to update cover photo' });
   }
 };
 
@@ -276,5 +262,4 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.uploadAvatarMulter = uploadAvatarMulter;
-exports.uploadCoverImageMulter = uploadCoverImageMulter;
+exports.upload = upload;

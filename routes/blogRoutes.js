@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', blogController.blog_index);
 
 // Route to handle creating a new blog (requires authentication)
-router.post('/createpost', blogController.blog_create_post);
+router.post('/createpost', blogController.upload.single('blogCoverImage'), blogController.blog_create_post);
 
 // Route to display the form for creating a new blog
 router.get('/create', blogController.blog_create_get);

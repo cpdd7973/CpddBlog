@@ -5,47 +5,52 @@
     <%- include('../partials/nav.ejs', { user: user }) %>
     <div class="profile-container container">
       <div class="user-conver-photo-wrapper position-relative d-flex justify-content-center align-items-center">
-        <img srcset="/assets/DisplayOnrender-mobile.webp 768w, /assets/DisplayOnrender-desktop.webp" sizes="(max-width: 768px) 768px" src="/assets/DisplayOnrender-desktop.webp" alt="default cover image"/>
+        <% if (user.coverPhoto !== '/assets/default-cover.png') { %>
+          <img src="<%= user.coverPhoto %>" alt="user cover image"/>
+        <% } else { %>
+          <img srcset="/assets/DisplayOnrender-mobile.webp 768w, /assets/DisplayOnrender-desktop.webp" sizes="(max-width: 768px) 768px" src="/assets/DisplayOnrender-desktop.webp" alt="default cover image"/>
+        <% } %> 
         <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
         <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0"></span>
-        <input type="file" id="coverImageInput" name="coverImage" accept="image/*">
+        <input type="file" id="coverImageInput" name="coverPhoto" accept="image/*">
       </div>
-      <div class="row mt-3">
-        <div class="col-md-4 text-center">
-          <picture class="d-inline-flex align-items-center justify-content-center position-relative avatar-wrapper">
-            <img src="<%= user.avatar %>" alt="Profile Picture" class="img-thumbnail border-0" width="150" height="150">
-            <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
-            <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0 rounded-circle" width="150" height="150"></span>
-          </picture>
-          <input type="file" id="avatarInput" name="avatar" accept="image/*">
-        </div>
-        <div class="col-md-8">
-          <h2><%= user.name %></h2>
-          <p><strong>Email:</strong> <%= user.email %></p>
-          <p>
+      <div class="px-5 d-flex gap-5">
+        <!-- <div class="text-center"> -->
+        <picture class="d-inline-flex align-items-center justify-content-center position-relative avatar-wrapper">
+          <img src="<%= user.avatar %>" alt="Profile Picture" class="img-thumbnail border-0 rounded-circle" width="150" height="150">
+          <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
+          <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0 rounded-circle" width="150" height="150"></span>
+        </picture>
+        <input type="file" id="avatarInput" name="avatar" accept="image/*">
+        <!-- </div> -->
+        <div class="user-info-wrapper">
+          <p class="mb-2"><strong>Username:</strong> <%= user.username %></p>
+          <p class="mb-2"><strong>Rank:</strong> <%= user.rank %></p>
+          <p class="mb-2"><strong>Email:</strong> <%= user.email %></p>
+          <p class="mb-0">
             <strong>Bio:</strong>
             <span><%= user.bio %></span>
-            <a href="" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreenLg"><% if (user.bio) { %>Update bio<% } else { %>Add bio<% } %> </a>
-            <div class="modal fade" id="exampleModalFullscreenLg" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
-              <div class="modal-dialog modal-fullscreen-lg-down">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-4" id="exampleModalFullscreenLgLabel">Add Your Bio</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form id="bioForm">
-                      <textarea id="bioEditor" name="bio"></textarea>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="submitBio" class="btn btn-primary">Save</button>
-                  </div>
+            <a href="" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreenLg"><% if (user.bio) { %>Update bio<% } else { %>Add bio<% } %></a>     
+          </p>
+          <div class="modal fade" id="exampleModalFullscreenLg" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen-lg-down">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-4" id="exampleModalFullscreenLgLabel">Add Your Bio</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="bioForm">
+                    <textarea id="bioEditor" name="bio"></textarea>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="submitBio" class="btn btn-primary">Save</button>
                 </div>
               </div>
-            </div>     
-          </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -102,6 +107,7 @@
             formData.append('coverPhoto', coverInput.files[0]);
             url = `/user/${userId}/upload-cover-image`;
           }
+          // console.log(formData);
           try {
             const avatarResponse = await fetch(url, {
               method: 'POST',

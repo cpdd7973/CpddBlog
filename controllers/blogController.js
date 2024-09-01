@@ -1,5 +1,25 @@
 const Blog = require('../models/blog');
-const User = require('../models/user');
+const cloudinary = require('cloudinary').v2; // Ensure Cloudinary is required at the top
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Set up Multer storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'blogCoverImages',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webep'],
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Display all blogs
 const blog_index = async (req, res) => {
@@ -56,8 +76,25 @@ const blog_create_post = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' }); // Handle unauthorized access
     }
 
-    const blog = new Blog(req.body);
-    console.log(blog);
+    let coverImageUrl = '/assets/default_image.png';
+
+    // Check if cover image is provided in the form data
+    console.log(req.file,"req.file");
+    if (req.file) {
+      // Upload the cover image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'blogCoverImages',
+        transformation: [{ width: 500, height: 500, crop: 'limit' }]
+      });
+      coverImageUrl = result.secure_url; // Get the URL from Cloudinary
+    }
+
+    // Create the blog post object
+    const blog = new Blog({
+      ...req.body,
+      coverImage: coverImageUrl,
+    });
+
     await blog.save();
     res.status(200).json({ message: 'Blog post created successfully!' });
   } catch (err) {
@@ -87,5 +124,6 @@ module.exports = {
   blog_details,
   blog_create_get,
   blog_create_post,
-  blog_delete
+  blog_delete,
+  upload
 };

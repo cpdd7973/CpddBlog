@@ -5,12 +5,12 @@
 <body>
   <%- include("../partials/nav.ejs") %>
 
-  <div class="details m-5">
+  <div class="details my-5 container">
     <h2><%= blog.title %></h2>
     <div class="content">
-      <p><%= blog.body %></p>
+      <p><%- blog.body -%></p>
     </div>
-    <button class="delete bg-danger text-decoration-none text-white px-3 py-1 rounded fw-bolder" data-doc="<%= blog._id %>">Delete</button>
+    <button class="delete border-0 bg-danger text-decoration-none text-white px-3 py-1 rounded fw-bolder" data-doc="<%= blog._id %>">Delete</button>
   </div>
 
   <%- include("../partials/footer.ejs") %>

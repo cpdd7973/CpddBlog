@@ -10,12 +10,16 @@
           <input type="text" name="title" class="form-control" placeholder="Title" id="blogTitle" required>
           <label for="title">Blog Title</label>
         </div>
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Add blog cover image here:</label>
+          <input class="form-control" type="file" id="blogCoverImage" name="blogCoverImage" accept="image/*">
+        </div>
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="blogSnippet" name="snippet" placeholder="Snippet" required>
           <label for="snippet">Blog Snippet</label>
         </div>
         <div class="form-floating mb-3">
-          <textarea class="form-control" placeholder="Leave a comment here" id="blogBody" name="body"
+          <textarea class="form-control" placeholder="Add blog description here" id="blogBody" name="body"
             style="height: 100px" required></textarea>
           <label for="body">Blog Body</label>
         </div>
@@ -25,40 +29,45 @@
       </form>
     </div>
     <%- include('../partials/footer.ejs') %>
+    <script src="https://cdn.tiny.cloud/1/l87xnfkh9ntyljhxspreseicxbcb29mcr4x0uls297m7tk34/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
+      tinymce.init({
+        selector: '#blogBody',
+        menubar: false,
+        toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link emoticons',
+        height: 300,
+      });
+
       let userId  = '<%= user.id %>';
       let username = '<%= user.username %>';
       let userRank = '<%= user.rank %>';
       let userAvatar = '<%= user.avatar %>';
       
-      document.getElementById("createBlogForm").addEventListener("submit", async (e) => {
+      document.querySelector(".create-blog button[type='submit']").addEventListener("click", async (e) => {
         e.preventDefault();
         
         let title = document.getElementById('blogTitle').value;
         let snippet = document.getElementById('blogSnippet').value;
-        let body = document.getElementById('blogBody').value;
+        let body = tinyMCE.get('blogBody').getContent();
+        let blogCoverImage = document.querySelector("#blogCoverImage").files[0];
         
-        const blogData = {
-          title: title,
-          snippet: snippet,
-          body: body,
-          author: {
-            _id: userId,
-            username: username,
-            rank: userRank,
-            avatar: userAvatar,
-          }
-        };
-    
+        // Use FormData to send the file along with other data
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('snippet', snippet);
+        formData.append('body', body);
+        formData.append('author[_id]', userId);
+        formData.append('author[username]', username);
+        formData.append('author[rank]', userRank);
+        formData.append('author[avatar]', userAvatar);
+        formData.append('blogCoverImage', blogCoverImage);
+        
         try {
           const response = await fetch(`/blogs/createpost`, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(blogData),
+            body: formData, // No need to set headers for FormData
           });
-    
+
           if (response.ok) {
             const result = await response.json();
             alert(result.message);

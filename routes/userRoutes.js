@@ -18,9 +18,9 @@ router.patch('/:id/bio', authController.updateUserBio);
 router.get('/profile/:id', authController.getUserById);
 
 // Route to upload user's avatar
-router.post('/:id/upload-avatar', authController.uploadAvatarMulter.single('avatar'), authController.uploadAvatar);
+router.post('/:id/upload-avatar', authController.upload.single('avatar'), authController.uploadAvatar);
 
 // Route to upload user's cover image
-router.post('/:id/upload-cover-image', authController.uploadCoverImageMulter.single('coverImage'), authController.uploadCoverImage);
+router.post('/:id/upload-cover-image', authController.upload.single('coverPhoto'), authController.updateCoverPhoto);
 
 module.exports = router;

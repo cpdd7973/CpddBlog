@@ -33,8 +33,14 @@ const blogSchema = new Schema({
       type: String,
       default: '/assets/user.png'
     }
+  },
+  blogCoverImage: {
+    type: String,
+    required: false,
+    default: '/assets/default_image.png'
   }
 }, { timestamps: true });
+
 
 // Create the Blog model
 const Blog = mongoose.model('Blog', blogSchema);
