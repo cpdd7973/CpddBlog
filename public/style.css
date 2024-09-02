@@ -42,6 +42,10 @@ svg.upload-overlay-svg {
   /* mix-blend-mode: difference; */
 }
 
+.blog-title {
+  color: #0e5ddd;
+}
+
 #avatarInputOverlay {
   background-color: #0e5ddd;
   opacity: 0.2;

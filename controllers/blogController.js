@@ -44,6 +44,7 @@ const blog_details = async (req, res) => {
   const id = req.params.id;
   try {
     const blog = await Blog.findById(id).exec();
+    console.log(blog)
     if (blog) {
       res.render('blogs/details', {
         blog: blog,
