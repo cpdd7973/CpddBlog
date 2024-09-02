@@ -4,6 +4,7 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const User = require('../models/user'); // Adjust the path to your User model
+const Blog = require('../models/blog');
 
 const JWT_SECRET = process.env.JWT_SECRET; // Store your JWT secret in environment variables
 
@@ -200,7 +201,13 @@ exports.uploadAvatar = async (req, res) => {
       { avatar: result.secure_url },
       { new: true } // Return the updated document
     );
-    req.session.user.avatar = result.secure_url || null;
+
+    await Blog.updateMany(
+      { 'author._id': userId },
+      { $set: { 'author.avatar': updatedUser.avatar } }
+    ).exec();
+
+    req.session.user.avatar = updatedUser.avatar || null;
     res.status(200).json({
       message: 'Avatar uploaded successfully!',
       user: req.session.user
