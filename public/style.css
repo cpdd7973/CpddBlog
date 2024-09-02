@@ -57,6 +57,12 @@ svg.upload-overlay-svg {
   column-gap: 40px;
 }
 
+.avatar-img {
+  background: #d0def5;
+  bottom: -25px;
+  right: 0;
+}
+
 @media screen and (max-width: 1200px) {
   .blog-listing-wrapper {
     column-count: 3;

@@ -36,9 +36,11 @@
           <li class="nav-item">
             <a class="nav-link" href="/about">About</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/blogs/create">New Blog</a>
-          </li>
+          <% if (typeof user !== 'undefined' && user) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/blogs/create">New Blog</a>
+            </li>
+          <% } %>
         </ul>
       </div>
     </div>

@@ -13,7 +13,13 @@
                 <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
                 <div class="card-body">
                   <h5 class="card-title"><%= blog.title %></h5>
-                  <p class="card-text" title="<%= blog.snippet %>"><%= blog.snippet %></p>
+                  <blockquote class="blockquote mb-0">
+                    <p class="card-text border-bottom mb-0 pb-3 position-relative" title="<%= blog.snippet %>">
+                      <%= blog.snippet %>
+                      <img src="<%= blog.author.avatar %>" alt="user avatar" width="50" height="50" class="position-absolute rounded-circle avatar-img">
+                    </p>
+                    <footer class="blockquote-footer d-inline-block"><%= blog.author.rank%> <cite title="Source Title">@<%= blog.author.username%></cite></footer>
+                  </blockquote>
                 </div>
               </div>
             </a>
