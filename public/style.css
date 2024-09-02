@@ -63,6 +63,10 @@ svg.upload-overlay-svg {
   right: 0;
 }
 
+.blockquote-footer {
+  margin-top: 0;
+}
+
 @media screen and (max-width: 1200px) {
   .blog-listing-wrapper {
     column-count: 3;
