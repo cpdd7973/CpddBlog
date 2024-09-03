@@ -39,6 +39,7 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
   cookie: { 
+    maxAge: 24 * 60 * 60 * 1000, // Set session expiration to 24 hours
     secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS in production
     httpOnly: true, // Prevent access via JavaScript
     sameSite: 'Lax' // Prevent CSRF attacks
