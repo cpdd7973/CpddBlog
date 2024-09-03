@@ -258,17 +258,21 @@ exports.updateCoverPhoto = async (req, res) => {
 
 exports.user_profile = async (req, res) => {
   try {
-    const userId = req.params.id; 
+    const userId = req.params.id;
     const user = await User.findOne({ _id: userId }).exec();
     if (!user) {
-      return res.status(404).render('404', { title: 'User Not Found' }); 
+      return res.status(404).render('404', { title: 'User Not Found' });
     }
     const blogs = await Blog.find({ 'author._id': userId }).sort({ createdAt: -1 }).exec();
+
+    // Set the current user in res.locals for the profile page
+    res.locals.currentUser = user;
 
     res.render('pages/profile', {
       title: `${user.username}'s Profile`,
       req: req,
-      user: user,
+      currentUser: user,
+      loggedInUser: res.locals.user,
       blogs: blogs
     });
   } catch (err) {

@@ -55,7 +55,9 @@ app.use(session({
 // }));
 
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null; // Define `user` in res.locals
+  res.locals.user = req.session.user || null; // Set logged-in user globally
+  res.locals.currentUser = null; // Define `user` in res.locals
+  res.locals.currentPath = req.originalUrl;   // Capture the current path
   next();
 });
 
