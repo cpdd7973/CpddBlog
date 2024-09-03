@@ -14,16 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     successMessage.classList.add('d-none');
 
     // Get form values
-    const email = form.querySelector('#email').value.trim();
+    const emailOrUsername = form.querySelector('#emailOrUsername').value.trim();
     const password = form.querySelector('#password').value.trim();
 
     // Validate form data
     const errors = [];
 
-    if (!email) {
-      errors.push('Email address is required.');
-    } else if (!validateEmail(email)) {
-      errors.push('Invalid email address.');
+    if (!emailOrUsername) {
+      errors.push('Username or email address is required.');
     }
 
     if (!password) {
@@ -44,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ emailOrUsername, password })
       });
 
       const result = await response.json();
@@ -68,10 +66,4 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMessages.classList.remove('d-none');
     }
   });
-
-  // Function to validate email format
-  function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  }
 });

@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!username) {
       errors.push('Username is required.');
+    } else if (!/^[a-zA-Z0-9]+$/.test(username)) {
+      errors.push('Username must be one word without spaces and contain only letters and numbers.');
     }
 
     if (!email) {

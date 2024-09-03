@@ -28,23 +28,26 @@ const upload = multer({ storage: storage });
 
 exports.loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
     // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+    if (!emailOrUsername || !password) {
+      return res.status(400).json({ error: 'Username/Email and password are required.' });
     }
 
-    // Find the user by email
-    const user = await User.findOne({ email });
+    // Find the user by email or username
+    const user = await User.findOne({
+      $or: [{ email: emailOrUsername }, { username: emailOrUsername }]
+    });
+
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
+      return res.status(401).json({ error: 'Invalid username/email or password.' });
     }
 
     // Check the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
+      return res.status(401).json({ error: 'Invalid username/email or password.' });
     }
 
     // Generate a JWT token
@@ -101,13 +104,13 @@ exports.registerUser = async (req, res) => {
     let avatar;
     switch (gender.toLowerCase()) { // Convert gender to lowercase for comparison
       case 'male':
-        avatar = 'assets/man.png';
+        avatar = '/assets/man.png';
         break;
       case 'female':
-        avatar = 'assets/woman.png';
+        avatar = '/assets/woman.png';
         break;
       case 'other':
-        avatar = 'assets/user.png';
+        avatar = '/assets/user.png';
         break;
       default:
         return res.status(400).json({ error: 'Invalid gender selected.' });
@@ -253,19 +256,24 @@ exports.updateCoverPhoto = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.user_profile = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId).select('-password'); // Exclude password from the result
-
+    const userId = req.params.id; 
+    const user = await User.findOne({ _id: userId }).exec();
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).render('404', { title: 'User Not Found' }); 
     }
+    const blogs = await Blog.find({ 'author._id': userId }).sort({ createdAt: -1 }).exec();
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.render('pages/profile', {
+      title: `${user.username}'s Profile`,
+      req: req,
+      user: user,
+      blogs: blogs
+    });
+  } catch (err) {
+    console.log('Error in user_profile:', err);
+    res.status(500).send('Internal Server Error');
   }
 };
 

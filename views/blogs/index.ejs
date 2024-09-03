@@ -4,30 +4,7 @@
   <body>
     <%- include('../partials/nav.ejs') %>
     <div class="blogs container">
-      <h2 class="text-center mb-4 mt-3">All Blogs</h2>
-      <div class="blog-listing-wrapper">
-        <% if(blogs.length > 0 ){ %>
-          <%  blogs.forEach(blog => { %>
-            <a class="text-dark text-decoration-none blog-listing-item" href="/blogs/<%= blog._id %>">
-              <div class="card">
-                <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
-                <div class="card-body">
-                  <h5 class="card-title"><%= blog.title %></h5>
-                  <blockquote class="blockquote mb-0">
-                    <p class="card-text border-bottom mb-0 pb-4 position-relative" title="<%= blog.snippet %>">
-                      <%= blog.snippet %>
-                      <img src="<%= blog.author.avatar %>" alt="user avatar" width="50" height="50" class="position-absolute rounded-circle avatar-img">
-                    </p>
-                    <footer class="blockquote-footer d-inline-block fs-6 pe-5"><%= blog.author.rank%> <cite title="Source Title">@<%= blog.author.username%></cite></footer>
-                  </blockquote>
-                </div>
-              </div>
-            </a>
-          <% }) %>
-        <% } else { %>
-          <p class="text-danger">OOP's, There are no blogs to display</p>
-        <% } %>
-      </div>
+      <%- include('../partials/blogListing.ejs',  { heading: 'All Blogs', blogs: blogs }) %>
     </div>
     <%- include('../partials/footer.ejs')%>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

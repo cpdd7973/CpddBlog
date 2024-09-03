@@ -13,6 +13,9 @@
         <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
         <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0"></span>
         <input type="file" id="coverImageInput" name="coverPhoto" accept="image/*">
+        <div class="spinner-border text-light position-absolute" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
       <div class="px-lg-5 d-flex gap-lg-5 gap-3 flex-column flex flex-lg-row">
         <div class="text-center avatar-wrapper position-relative">
@@ -20,6 +23,9 @@
             <img src="<%= user.avatar %>" alt="Profile Picture" class="img-thumbnail border rounded-circle" width="150" height="150">
             <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
             <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0 rounded-circle" width="150" height="150"></span>
+            <div class="spinner-border text-light position-absolute" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </picture>
         </div>
         <input type="file" id="avatarInput" name="avatar" accept="image/*">
@@ -53,6 +59,7 @@
           </div>
         </div>
       </div>
+      <%- include('../partials/blogListing.ejs',  { heading: 'User Blogs', blogs: blogs }) %>
     </div>
     <%- include('../partials/footer.ejs') %>
     <!-- Include TinyMCE script -->
@@ -103,9 +110,13 @@
           if (item === "avatar") {
             formData.append('avatar', avatarInput.files[0]);
             url = `/user/${userId}/upload-avatar`;
+            document.querySelector(".avatar-wrapper .spinner-border").style.display = "inline-block";
+            document.querySelector(".avatar-wrapper #avatarInputOverlay").style.display = "inline-block";
           } else {
             formData.append('coverPhoto', coverInput.files[0]);
             url = `/user/${userId}/upload-cover-image`;
+            document.querySelector(".user-conver-photo-wrapper .spinner-border").style.display = "inline-block";
+            document.querySelector(".user-conver-photo-wrapper #avatarInputOverlay").style.display = "inline-block";
           }
           // console.log(formData);
           try {
@@ -121,7 +132,7 @@
             }
 
             const avatarResult = await avatarResponse.json();
-            alert(avatarResult.message); // Notify the user of success
+            // alert(avatarResult.message); // Notify the user of success
             location.reload();
           } catch (error) {
             console.error('Error uploading avatar/coverImage:', error);

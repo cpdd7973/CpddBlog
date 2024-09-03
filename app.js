@@ -75,14 +75,6 @@ app.get('/login', (req, res) => {
   });
 });
 
-app.get('/profile', (req, res) => {
-  res.render('pages/profile', {
-    title: 'Profile',
-    req: req,
-    user: req.session.user || null  // Pass user object from session
-  });
-});
-
 app.get('/register', (req, res) => {
   res.render('authentication/signup', {
     title: 'Register',
