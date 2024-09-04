@@ -260,20 +260,42 @@ exports.user_profile = async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findOne({ _id: userId }).exec();
+    
     if (!user) {
       return res.status(404).render('404', { title: 'User Not Found' });
     }
-    const blogs = await Blog.find({ 'author._id': userId }).sort({ createdAt: -1 }).exec();
+
+    // Pagination variables
+    const page = parseInt(req.query.page, 10) || 1; // Default to page 1 if not provided
+    const limit = parseInt(req.query.limit, 10) || 5; // Default to 5 blogs per page if not provided
+    const skip = (page - 1) * limit;
+
+    // Get the total count of blogs for pagination
+    const totalBlogs = await Blog.countDocuments({ 'author._id': userId });
+
+    // Fetch blogs with pagination
+    const blogs = await Blog.find({ 'author._id': userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalBlogs / limit);
 
     // Set the current user in res.locals for the profile page
     res.locals.currentUser = user;
 
+    // Render the profile page with blog data and pagination info
     res.render('pages/profile', {
       title: `${user.username}'s Profile`,
       req: req,
       currentUser: user,
       loggedInUser: res.locals.user,
-      blogs: blogs
+      blogs: blogs,
+      currentPage: page,
+      totalPages: totalPages,
+      limit: limit, // Pass the limit to the template
     });
   } catch (err) {
     console.log('Error in user_profile:', err);

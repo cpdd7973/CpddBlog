@@ -21,6 +21,86 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
+const getBlogs = async (req, res) => {
+  try {
+    // Extract and validate query parameters
+    let page = parseInt(req.query.page, 10);
+    let limit = parseInt(req.query.limit, 5);
+    const userId = req.query.userId;
+
+    // Set default values if parameters are not provided or invalid
+    if (isNaN(page) || page < 1) page = 1;
+    if (isNaN(limit) || limit < 1) limit = 5;
+
+    const skip = (page - 1) * limit;
+
+    // Build the filter object based on whether userId is provided
+    let filter = {};
+    if (userId) {
+      // Validate the userId format
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).send('Invalid user ID');
+      }
+
+      // Optionally, verify that the user exists
+      const user = await User.findById(userId).exec();
+      if (!user) {
+        return res.status(404).render('404', { title: 'User Not Found' });
+      }
+
+      // Filter blogs by the author's ID
+      filter['author._id'] = userId;
+    }
+
+    // Fetch blogs and total count in parallel for efficiency
+    const [blogs, totalBlogs] = await Promise.all([
+      Blog.find(filter)
+        .sort({ createdAt: -1 }) // Sort blogs by creation date descending
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      Blog.countDocuments(filter).exec()
+    ]);
+
+    const totalPages = Math.ceil(totalBlogs / limit);
+
+    // Adjust the current page if it exceeds the total number of pages
+    if (page > totalPages && totalPages > 0) {
+      page = totalPages;
+      const newSkip = (page - 1) * limit;
+      const newBlogs = await Blog.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(newSkip)
+        .limit(limit)
+        .exec();
+
+      return res.render('blogs/index', {
+        title: 'All Blogs',
+        blogs: newBlogs,
+        currentPage: page,
+        totalPages: totalPages,
+        req: req,
+        limit: limit,
+        userId: userId,
+      });
+    }
+
+    // Render the EJS template with the fetched data
+    res.render('blogs/index', {
+      title: 'All Blogs',
+      blogs: blogs,
+      currentPage: page,
+      totalPages: totalPages,
+      limit: limit,
+      req: req,
+      userId: userId,
+    });
+  } catch (err) {
+    console.error('Error fetching blogs:', err);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 // Display all blogs
 const blog_index = async (req, res) => {
   try {
@@ -126,5 +206,6 @@ module.exports = {
   blog_create_get,
   blog_create_post,
   blog_delete,
+  getBlogs,
   upload
 };

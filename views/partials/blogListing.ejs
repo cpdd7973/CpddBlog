@@ -33,3 +33,67 @@
     <p class="mb-0 fs-5">It seems you haven't created any blogs yet. Why not start one now? Share your thoughts and ideas with the world! <a href="/blogs/create" class="ms-2 link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" role="button">Start blogging now!</a></p>
   </div>
 <% } %>
+<% if (totalPages > 1) { %>
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-5">
+      <!-- Previous Button -->
+      <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+        <a class="page-link" href="<%= currentPage > 1 ? '?page=' + (currentPage - 1) + '&limit=' + limit : '#' %>">Previous</a>
+      </li>
+
+      <% 
+        // Calculate the range of page numbers to show
+        let startPage = Math.max(1, currentPage - 1);
+        let endPage = Math.min(totalPages, currentPage + 1);
+        
+        // Adjust startPage if we don't have enough pages before the current page
+        if (endPage - startPage + 1 < 2) {
+          startPage = Math.max(1, endPage - 1);
+        }
+
+        // Adjust endPage if we don't have enough pages after the current page
+        if (endPage - startPage + 1 < 2) {
+          endPage = Math.min(totalPages, startPage + 1);
+        }
+        
+        // Display "..." if there are pages before the startPage
+        if (startPage > 1) { 
+      %>
+        <li class="page-item">
+          <a class="page-link" href="?page=1&limit=<%= limit %>">1</a>
+        </li>
+        <% if (startPage > 1) { %>
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+        <% } %>
+      <% } %>
+
+      <% 
+        // Loop through the pages within the calculated range
+        for (let i = startPage; i <= endPage; i++) { 
+      %>
+        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+        </li>
+      <% } %>
+
+      <!-- Display "..." if there are pages after the endPage -->
+      <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+          <li class="page-item disabled">
+            <span class="page-link">...</span>
+          </li>
+        <% } %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= totalPages %>&limit=<%= limit %>"><%= totalPages %></a>
+        </li>
+      <% } %>
+
+      <!-- Next Button -->
+      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+        <a class="page-link" href="<%= currentPage < totalPages ? '?page=' + (currentPage + 1) + '&limit=' + limit : '#' %>">Next</a>
+      </li>
+    </ul>
+  </nav>
+<% } %>

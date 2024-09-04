@@ -3,7 +3,8 @@ const blogController = require('../controllers/blogController');
 const router = express.Router();
 
 // Route to display all blogs
-router.get('/', blogController.blog_index);
+// router.get('/', blogController.blog_index);
+router.get('/', blogController.getBlogs);
 
 // Route to handle creating a new blog (requires authentication)
 router.post('/createpost', blogController.upload.single('blogCoverImage'), blogController.blog_create_post);
