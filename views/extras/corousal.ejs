@@ -1,0 +1,83 @@
+<div class="topic-container">
+  <div class="image-container">
+    <img id="topic-image" src="/assets/technology.webp" alt="Topic Image" />
+  </div>
+  <div class="circle-container">
+    <!-- Buttons will be dynamically inserted here -->
+  </div>
+</div>
+
+<script>
+  // Define the topics array directly in the script tag
+  const topics = [
+    { name: "Technology", image: "/assets/technology.webp" },
+    { name: "Travel", image: "/assets/travel.png" },
+    { name: "Food & Drink", image: "/assets/food.png" },
+    { name: "Health & Wellness", image: "/assets/health.png" },
+    { name: "Lifestyle", image: "/assets/lifestyle.png" },
+    { name: "Finance", image: "/assets/finance.png" },
+    { name: "Entertainment", image: "/assets/entertainment.png" },
+    { name: "Education", image: "/assets/education.png" },
+  ];
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const circleContainer = document.querySelector(".circle-container");
+    const topicImage = document.getElementById("topic-image");
+    let intervalId;
+
+    // Function to dynamically create buttons
+    function createButtons() {
+      topics.forEach((topic, index) => {
+        const button = document.createElement("button");
+        button.classList.add("topic-btn");
+        if (index === 0) button.classList.add("selected");
+        button.textContent = topic.name;
+        button.setAttribute("data-image", topic.image);
+        circleContainer.appendChild(button);
+      });
+    }
+
+    // Function to select a topic
+    function selectTopic(button) {
+      const buttons = document.querySelectorAll(".topic-btn");
+      buttons.forEach((btn) => btn.classList.remove("selected"));
+      button.classList.add("selected");
+      topicImage.src = button.getAttribute("data-image");
+    }
+
+    // Automatically select a random topic every 2 seconds
+    function selectRandomTopic() {
+      const buttons = document.querySelectorAll(".topic-btn");
+      const randomIndex = Math.floor(Math.random() * buttons.length);
+      selectTopic(buttons[randomIndex]);
+    }
+
+    // Start automatic random selection every 2 seconds
+    function startAutoSelection() {
+      intervalId = setInterval(selectRandomTopic, 2000);
+    }
+
+    // Stop the auto-selection when interacting with a button
+    function stopAutoSelection() {
+      clearInterval(intervalId);
+    }
+
+    // Add click event listeners to buttons
+    function addClickEvents() {
+      const buttons = document.querySelectorAll(".topic-btn");
+      buttons.forEach((button) => {
+        button.addEventListener("click", function () {
+          selectTopic(this); // Select the clicked button
+          stopAutoSelection(); // Stop automatic selection
+          setTimeout(startAutoSelection, 2000); // Resume after 2 seconds
+        });
+      });
+    }
+
+    // Initialize the buttons and automatic selection
+    createButtons();
+    selectTopic(document.querySelector(".topic-btn"));
+    startAutoSelection();
+    addClickEvents();
+  });
+</script>

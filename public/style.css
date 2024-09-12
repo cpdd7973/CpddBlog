@@ -257,6 +257,14 @@ svg.upload-overlay-svg {
     max-width: 100%;
     height: auto;
   }
+  .cpdd-blog-banner {
+    padding-top: 230px !important;
+    background-position: top;
+    background-origin: padding-box;
+  }
+  .cpdd-blog-banner .col-6 {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -271,5 +279,8 @@ svg.upload-overlay-svg {
 @media screen and (max-width: 480px) {
   .navbar-brand img {
     width: 120px;
+  }
+  .cpdd-blog-banner {
+    padding-top: 180px !important;
   }
 }
