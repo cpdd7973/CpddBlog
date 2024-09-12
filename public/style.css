@@ -231,6 +231,11 @@ svg.upload-overlay-svg {
   background-position: right;
 }
 
+.profile-container h2, .profile-container .blog-listing-wrapper {
+  position: relative;
+  top: -75px;
+}
+
 .username {
   width: 50%;
   overflow: hidden;
