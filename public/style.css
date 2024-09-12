@@ -1,3 +1,7 @@
+* {
+  font-family: "Mingzat", sans-serif;
+}
+
 .navbar {
   position: sticky;
   top: 0;
@@ -16,8 +20,29 @@
   z-index: 3;
 }
 
+.delete,
+.edit {
+  background: transparent;
+}
+
+.delete svg {
+  fill: #dc3545;
+}
+
+.delete svg:hover {
+  fill: #bb2d3b;
+}
+
+.edit svg {
+  fill: #198754;
+}
+
+.edit svg:hover {
+  fill: #157347;
+}
+
 .page-link {
-  padding: .375rem .50rem;
+  padding: 0.375rem 0.5rem;
 }
 
 .overlay__inner {
@@ -83,7 +108,10 @@
   border-bottom: 3px solid transparent;
 }
 
-#avatarInput, #avatarInputOverlay, svg.upload-overlay-svg, #coverImageInput {
+#avatarInput,
+#avatarInputOverlay,
+svg.upload-overlay-svg,
+#coverImageInput {
   display: none;
 }
 
@@ -139,10 +167,12 @@ svg.upload-overlay-svg {
   width: 100%;
 }
 
-.avatar-wrapper:hover #avatarInputOverlay, .user-conver-photo-wrapper:hover #avatarInputOverlay {
+.avatar-wrapper:hover #avatarInputOverlay,
+.user-conver-photo-wrapper:hover #avatarInputOverlay {
   display: inline-block;
 }
-.avatar-wrapper:hover svg.upload-overlay-svg, .user-conver-photo-wrapper:hover svg.upload-overlay-svg {
+.avatar-wrapper:hover svg.upload-overlay-svg,
+.user-conver-photo-wrapper:hover svg.upload-overlay-svg {
   display: inline;
 }
 
@@ -158,6 +188,53 @@ svg.upload-overlay-svg {
 
 .spinner-border {
   display: none;
+}
+
+.banner-desc {
+  font-family: "Mingzat", sans-serif;
+}
+
+.banner-title {
+  font-family: "Sofadi One", system-ui;
+  color: #0e5ddd;
+  font-weight: bolder;
+}
+
+.blockquote-footer::before {
+  content: "";
+}
+
+.blockquote-footer cite {
+  vertical-align: middle;
+}
+
+.date-string {
+  display: inline-block;
+  padding: 5px 30px 5px 20px;
+  background: #0e5ddd;
+  color: #fff;
+  font-weight: bold;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+.page-title {
+  color: #0e5ddd;
+  font-weight: bold;
+  font-family: "Sofadi One", system-ui;
+}
+
+.cpdd-blog-banner {
+  background: url(/assets/collage.webp);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+}
+
+.username {
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media screen and (min-width: 992px) {
@@ -183,8 +260,11 @@ svg.upload-overlay-svg {
 }
 
 @media screen and (max-width: 768px) {
-  .blog-listing-wrapper {
+  .blog-listing-wrapper picture {
     column-count: 1;
+  }
+  .blog-content-wrapper {
+    margin-right: 0;
   }
 }
 

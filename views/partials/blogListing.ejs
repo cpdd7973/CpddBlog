@@ -1,9 +1,18 @@
-<h2 class="text-center mb-4 mt-3"><%= heading %></h2>
+<h2 class="text-center my-4 page-title"><%= heading %></h2>
+<% 
+  function formatDate(date) {
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+%>
 <% if(blogs.length > 0) { %>
   <div class="blog-listing-wrapper">
     <% blogs.forEach(blog => { %>
       <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
-        <div class="card blog-listing-item">
+        <div class="card blog-listing-item shadow-sm">
           <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
           <div class="card-body">
             <h5 class="card-title">
@@ -18,8 +27,8 @@
             </p>
             <a href="/user/profile/<%= blog.author._id %>">
               <blockquote class="blockquote mb-0">
-                <footer class="blockquote-footer d-inline-block fs-6 pe-5">
-                  <%= blog.author.rank %> <cite title="Source Title">@<%= blog.author.username %></cite>
+                <footer class="blockquote-footer d-inline-block fs-6 pt-4 mb-0">
+                  <cite title="<%= blog.author.username %>" class="username">@<%= blog.author.username %> - </cite><cite><%= formatDate(blog.createdAt) %></cite>
                 </footer>
               </blockquote>
             </a>

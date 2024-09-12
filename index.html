@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Topics</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+.topic-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #ccc;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.circle-container {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topic-btn {
+  position: absolute;
+  padding: 10px 20px;
+  background-color: #ececec;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.topic-btn.selected {
+  background-color: #4caf50;
+  color: white;
+}
+
+.topic-btn:hover {
+  background-color: #ddd;
+}
+
+/* Positioning buttons around the image in a circle */
+.topic-btn:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+.topic-btn:nth-child(2) { top: 25%; right: 0; transform: translateY(-50%); }
+.topic-btn:nth-child(3) { top: 50%; right: 0; transform: translateY(-50%); }
+.topic-btn:nth-child(4) { bottom: 25%; right: 0; transform: translateY(50%); }
+.topic-btn:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
+.topic-btn:nth-child(6) { bottom: 25%; left: 0; transform: translateY(50%); }
+.topic-btn:nth-child(7) { top: 50%; left: 0; transform: translateY(-50%); }
+.topic-btn:nth-child(8) { top: 25%; left: 0; transform: translateY(-50%); }
+
+  </style>
+</head>
+<body>
+  <div class="topic-container">
+    <div class="image-container">
+      <img id="topic-image" src="assets/technology.png" alt="Topic Image">
+    </div>
+    <div class="buttons-circle">
+      <button class="topic-btn selected" data-image="images/tech.jpg">Technology</button>
+      <button class="topic-btn" data-image="images/travel.jpg">Travel</button>
+      <button class="topic-btn" data-image="images/food.jpg">Food & Drink</button>
+      <button class="topic-btn" data-image="images/health.jpg">Health</button>
+      <button class="topic-btn" data-image="images/lifestyle.jpg">Lifestyle</button>
+      <button class="topic-btn" data-image="images/finance.jpg">Finance</button>
+      <button class="topic-btn" data-image="images/entertainment.jpg">Entertainment</button>
+      <button class="topic-btn" data-image="images/education.jpg">Education</button>
+    </div>
+  </div>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const buttons = document.querySelectorAll(".topic-btn");
+  const topicImage = document.getElementById("topic-image");
+  let intervalId;
+
+  // Function to select a topic
+  function selectTopic(button) {
+    // Remove 'selected' class from all buttons
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Add 'selected' class to the clicked button
+    button.classList.add('selected');
+    
+    // Change the image to the corresponding topic image
+    topicImage.src = button.getAttribute('data-image');
+  }
+
+  // Automatically select a random topic every 2 seconds
+  function selectRandomTopic() {
+    const randomIndex = Math.floor(Math.random() * buttons.length);
+    selectTopic(buttons[randomIndex]);
+  }
+
+  // Start automatic random selection every 2 seconds
+  function startAutoSelection() {
+    intervalId = setInterval(selectRandomTopic, 2000);
+  }
+
+  // Stop the auto-selection when interacting with a button
+  function stopAutoSelection() {
+    clearInterval(intervalId);
+  }
+
+  // Add click event listeners to buttons
+  buttons.forEach(button => {
+    button.addEventListener('click', function () {
+      selectTopic(this); // Select the clicked button
+      stopAutoSelection(); // Stop automatic selection
+      setTimeout(startAutoSelection, 2000); // Resume after 2 seconds
+    });
+  });
+
+  // Initially select the first topic
+  selectTopic(buttons[0]);
+
+  // Start automatic random selection
+  startAutoSelection();
+});
+  </script>
+</body>
+</html>

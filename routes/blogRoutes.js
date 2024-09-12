@@ -9,6 +9,12 @@ router.get('/', blogController.getBlogs);
 // Route to handle creating a new blog (requires authentication)
 router.post('/createpost', blogController.upload.single('blogCoverImage'), blogController.blog_create_post);
 
+// Route to handle updating a blog (requires authentication)
+router.post('/edit/:id', blogController.upload.single('blogCoverImage'), blogController.blog_update_post); // Changed from blog_create_post to blog_update_post
+
+// Route to display edit blog page
+router.get('/edit/:id', blogController.blog_edit_get);
+
 // Route to display the form for creating a new blog
 router.get('/create', blogController.blog_create_get);
 

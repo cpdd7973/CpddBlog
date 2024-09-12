@@ -77,7 +77,8 @@
           </div>
         </div>
       </div>
-      <%- include('../partials/blogListing.ejs',  { heading: 'User Blogs', blogs: blogs }) %>       
+      <% const heading = currentUser.username + ' Blogs'; %>
+      <%- include('../partials/blogListing.ejs', { heading: heading, blogs: blogs }) %>       
     </div>
     <%- include('../partials/footer.ejs') %>
     <!-- Include TinyMCE script -->

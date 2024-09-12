@@ -184,6 +184,83 @@ const blog_create_post = async (req, res) => {
   }
 };
 
+// Update a blog post
+const blog_update_post = async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const blogId = req.params.id;
+    const existingBlog = await Blog.findById(blogId);
+
+    if (!existingBlog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+
+    // Ensure the user is the owner of the blog or an Admin
+    if (existingBlog.author._id.toString() !== req.session.user.id && req.session.user.rank !== 'Admin') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    let coverImageUrl = existingBlog.blogCoverImage; // Keep the existing image
+
+    // If a new cover image is uploaded, upload it to Cloudinary
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'blogCoverImages',
+        transformation: [{ width: 500, height: 500, crop: 'limit' }],
+      });
+      coverImageUrl = result.secure_url; // Update the cover image URL
+    }
+
+    // Update blog post details
+    const updatedData = {
+      title: req.body.title || existingBlog.title,
+      snippet: req.body.snippet || existingBlog.snippet,
+      body: req.body.body || existingBlog.body,
+      blogCoverImage: coverImageUrl, // Use the updated or existing cover image URL
+    };
+
+    const updatedBlog = await Blog.findByIdAndUpdate(blogId, updatedData, { new: true });
+
+    res.status(200).json({ message: 'Blog post updated successfully!', blog: updatedBlog });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+const blog_edit_get = async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const blogId = req.params.id;
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).render('pages/404', { title: 'Blog Not Found', req: req });
+    }
+
+    // Ensure the logged-in user is the author of the blog or an Admin
+    if (blog.author._id.toString() !== req.session.user.id && req.session.user.rank !== 'Admin') {
+      return res.status(403).render('pages/404', { title: 'Forbidden', req: req });
+    }
+
+    res.render('blogs/edit', {
+      title: 'Edit Blog',
+      blog: blog,
+      req: req,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.log('Error rendering the edit page:', err);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 // Delete a blog post
 const blog_delete = async (req, res) => {
   const id = req.params.id;
@@ -207,5 +284,7 @@ module.exports = {
   blog_create_post,
   blog_delete,
   getBlogs,
+  blog_update_post,
+  blog_edit_get,
   upload
 };

@@ -4,6 +4,7 @@
   <body>
     <%- include('../partials/nav.ejs') %>
     <div class="blogs container">
+      <%- include('../partials/banner.ejs') %>
       <%- include('../partials/blogListing.ejs',  { heading: 'All Blogs', blogs: blogs }) %>
     </div>
     <%- include('../partials/footer.ejs')%>
