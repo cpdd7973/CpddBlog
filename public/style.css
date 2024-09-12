@@ -268,7 +268,7 @@ svg.upload-overlay-svg {
 }
 
 @media screen and (max-width: 768px) {
-  .blog-listing-wrapper picture {
+  .blog-listing-wrapper {
     column-count: 1;
   }
   .blog-content-wrapper {
