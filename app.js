@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.get('/', (req, res) => {
-  res.redirect('/blogs');
+  res.redirect('/home');
 });
 
 app.use('/blogs', blogRoutes);
@@ -89,7 +89,7 @@ app.get('/register', (req, res) => {
 });
 
 // app.js
-app.get('/about', (req, res) => {
+app.get('/home', (req, res) => {
   res.render('pages/about', {
     title: 'About Us',
     req: req,

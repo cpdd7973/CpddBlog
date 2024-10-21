@@ -10,7 +10,7 @@
         <% } else { %>
           <img srcset="/assets/DisplayOnrender-mobile.webp 768w, /assets/DisplayOnrender-desktop.webp" sizes="(max-width: 768px) 768px" src="/assets/DisplayOnrender-desktop.webp" alt="default cover image"/>
         <% } %>
-        <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath.includes(user.id)) || user && user.rank == "Admin") { %>
+        <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath && user && currentPath.includes(user.id)) || (user && user.rank == "Admin")) { %>
           <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
           <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0"></span>
           <input type="file" id="coverImageInput" name="coverPhoto" accept="image/*">
@@ -23,7 +23,7 @@
         <div class="text-center avatar-wrapper position-relative">
           <picture class="d-inline-flex align-items-center justify-content-center position-relative">
             <img src="<%= currentUser.avatar %>" alt="Profile Picture" class="img-thumbnail border rounded-circle" width="150" height="150">
-            <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath.includes(user.id)) || user && user.rank == "Admin") { %>
+            <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath && user && currentPath.includes(user.id)) || (user && user.rank == "Admin")) { %>
               <svg width="40" class="position-absolute upload-overlay-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128l-368 0zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39L296 392c0 13.3 10.7 24 24 24s24-10.7 24-24l0-134.1 39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
               <span id="avatarInputOverlay" class="position-absolute top-0 bottom-0 start-0 end-0 rounded-circle" width="150" height="150"></span>
               <div class="spinner-border text-light position-absolute" role="status">
@@ -46,7 +46,7 @@
                 No bio yet!
               <% } %>
             </span>
-            <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath.includes(user.id)) || user && user.rank == "Admin") { %>
+            <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath && user && currentPath.includes(user.id)) || (user && user.rank == "Admin")) { %>
               <a href="" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreenLg">
                 <% if (currentUser.bio) { %>
                   Update bio
@@ -84,104 +84,15 @@
     <!-- Include TinyMCE script -->
     <script src="https://cdn.tiny.cloud/1/l87xnfkh9ntyljhxspreseicxbcb29mcr4x0uls297m7tk34/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <!-- <script src="/js/profile.js"></script> -->
-    <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath.includes(user.id)) || user && user.rank == "Admin") { %>
+    <% if ((typeof currentUser !== 'undefined' && currentUser && currentPath && user && currentPath.includes(user.id)) || (user && user.rank == "Admin")) { %>
       <script>
         tinymce.init({
           selector: '#bioEditor',
           menubar: false,
-          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link emoticons',
-          height: 300,
+          plugins: 'advlist autolink lists link charmap preview',
+          toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | preview'
         });
-
-        const userId = '<%= currentUser.id %>'; // Ensure user._id is available in your EJS
-        document.getElementById('submitBio').addEventListener('click', async () => {
-          const bio = tinymce.get('bioEditor').getContent({ format: 'text' });
-
-          try {
-            const response = await fetch(`/user/${userId}/bio`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ bio: bio || null }), // Set bio to null if empty
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              alert(result.message); // Notify the user of success
-              location.reload(); // Optionally reload the page to reflect changes
-            } else {
-              const error = await response.json();
-              alert(error.message); // Notify the user of the error
-            }
-          } catch (error) {
-            console.error('Error updating bio:', error);
-            alert('An error occurred while updating the bio');
-          }
-        });
-
-        const avatarInput = document.getElementById('avatarInput');
-        const coverInput = document.getElementById('coverImageInput');
-        async function uploadUserAsset(item) {
-          // Check if a file is selected
-          if (avatarInput.files.length > 0 || coverInput.files.length > 0) {
-            const formData = new FormData();
-            let url;
-            if (item === "avatar") {
-              formData.append('avatar', avatarInput.files[0]);
-              url = `/user/${userId}/upload-avatar`;
-              document.querySelector(".avatar-wrapper .spinner-border").style.display = "inline-block";
-              document.querySelector(".avatar-wrapper #avatarInputOverlay").style.display = "inline-block";
-            } else {
-              formData.append('coverPhoto', coverInput.files[0]);
-              url = `/user/${userId}/upload-cover-image`;
-              document.querySelector(".user-conver-photo-wrapper .spinner-border").style.display = "inline-block";
-              document.querySelector(".user-conver-photo-wrapper #avatarInputOverlay").style.display = "inline-block";
-            }
-            // console.log(formData);
-            try {
-              const avatarResponse = await fetch(url, {
-                method: 'POST',
-                body: formData,
-              });
-
-              if (!avatarResponse.ok) {
-                const error = await avatarResponse.json();
-                alert(error.message); // Notify the user of the error
-                return;
-              }
-
-              const avatarResult = await avatarResponse.json();
-              // alert(avatarResult.message); // Notify the user of success
-              location.reload();
-            } catch (error) {
-              console.error('Error uploading avatar/coverImage:', error);
-              alert('An error occurred while uploading the avatar/coverImage');
-            }
-          }
-        }
-
-        document.querySelectorAll("#avatarInputOverlay, .upload-overlay-svg").forEach(element => {
-          element.addEventListener("click", function(e) {
-            if (e.target.parentElement.classList.value.includes("user-conver-photo-wrapper")) {
-              coverInput.click();
-              console.log("cover");
-            } else {
-              avatarInput.click();
-            }
-          });
-        });
-
-        avatarInput.addEventListener("change", function(){
-          uploadUserAsset("avatar");
-        })
-        coverInput.addEventListener("change", function(){
-          uploadUserAsset("cover");
-        })
       </script>
     <% } %>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
   </body>
 </html>

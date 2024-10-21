@@ -86,7 +86,37 @@
   width: 100px;
 }
 
+.accordion-button:not(.collapsed) {
+  background-color: transparent;
+}
+
+.join-now-banner {
+  background: #0e5ddd;
+  box-shadow: rgba(50, 50, 93, 0.1) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px inset;
+}
+
+.join-now-banner a {
+  white-space: nowrap;
+  padding: 5px 10px;
+  color: #0e5ddd;
+  box-shadow: rgba(60, 64, 67, 0.1) 0px 1px 2px 0px, rgba(60, 64, 67, 0.1) 0px 2px 6px 2px;
+}
+
+.accordion-button:focus {
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+}
+
+.join-now-banner a:hover {
+  background: #f98f7c !important;
+  color: #fff;
+}
+
+.dropdown-item:active svg {
+  fill: #fff;
+}
+
 .footer-copyright {
+  user-select: none;
   color: #0e5ddd;
 }
 
@@ -208,7 +238,12 @@ svg.upload-overlay-svg {
   vertical-align: middle;
 }
 
+p, h1, h2, h3, h4 {
+  user-select: none;
+}
+
 .date-string {
+  user-select: none;
   display: inline-block;
   padding: 5px 30px 5px 20px;
   background: #0e5ddd;
@@ -227,7 +262,7 @@ svg.upload-overlay-svg {
 .cpdd-blog-banner {
   background: url(/assets/collage.webp);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 50%;
   background-position: right;
 }
 
@@ -257,6 +292,9 @@ svg.upload-overlay-svg {
 @media screen and (max-width: 992px) {
   .blog-listing-wrapper {
     column-count: 2;
+  }
+  .cpdd-blog-banner {
+    background-size: contain;
   }
   .blog-cover-image {
     max-width: 100%;
