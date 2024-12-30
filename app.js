@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 // Trust the proxy
+// mongoose.set('strictQuery', true);
 app.set('trust proxy', true);
 
 // Connect to MongoDB
@@ -59,6 +60,7 @@ app.use((req, res, next) => {
   res.locals.user = req.session.user || null; // Set logged-in user globally
   res.locals.currentUser = null; // Define `user` in res.locals
   res.locals.currentPath = req.originalUrl;   // Capture the current path
+  console.log(req.session);
   next();
 });
 
