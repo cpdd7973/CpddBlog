@@ -10,7 +10,6 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 // Trust the proxy
-// mongoose.set('strictQuery', true);
 app.set('trust proxy', true);
 
 // Connect to MongoDB
@@ -49,11 +48,11 @@ app.use(session({
 
 // Development session
 // app.use(session({
-//   secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
-//   resave: false,
-//   saveUninitialized: false,
-//   store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
-//   cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
+//     secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
+//     resave: false,
+//     saveUninitialized: false,
+//     store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
+//     cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
 // }));
 
 app.use((req, res, next) => {
