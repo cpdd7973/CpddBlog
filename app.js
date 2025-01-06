@@ -33,27 +33,27 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Session middleware Production
-// app.use(session({
-//   secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
-//   resave: false,
-//   saveUninitialized: false,
-//   store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
-//   cookie: { 
-//     maxAge: 24 * 60 * 60 * 1000, // Set session expiration to 24 hours
-//     secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS in production
-//     httpOnly: true, // Prevent access via JavaScript
-//     sameSite: 'Lax' // Prevent CSRF attacks
-//   }
-// }));
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
+  cookie: { 
+    maxAge: 24 * 60 * 60 * 1000, // Set session expiration to 24 hours
+    secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS in production
+    httpOnly: true, // Prevent access via JavaScript
+    sameSite: 'Lax' // Prevent CSRF attacks
+  }
+}));
 
 // Development session
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
-    cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
-}));
+// app.use(session({
+//     secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
+//     resave: false,
+//     saveUninitialized: false,
+//     store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
+//     cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
+// }));
 
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null; // Set logged-in user globally
