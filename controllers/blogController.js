@@ -277,6 +277,38 @@ const blog_delete = async (req, res) => {
   }
 };
 
+// Functionality for toggling likes
+const toggle_like = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const userId = req.session.user.id; // Assuming user ID is stored in the session
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+
+    const hasLiked = blog.likes.includes(userId);
+
+    if (hasLiked) {
+      // Unlike the blog
+      blog.likes = blog.likes.filter(id => id.toString() !== userId.toString());
+    } else {
+      // Like the blog
+      blog.likes.push(userId);
+    }
+
+    await blog.save();
+    res.status(200).json({
+      message: hasLiked ? 'Unliked' : 'Liked',
+      likesCount: blog.likes.length,
+    });
+  } catch (err) {
+    console.error('Error toggling like:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   blog_index,
   blog_details,
@@ -286,5 +318,6 @@ module.exports = {
   getBlogs,
   blog_update_post,
   blog_edit_get,
+  toggle_like,
   upload
 };

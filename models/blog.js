@@ -5,42 +5,47 @@ const Schema = mongoose.Schema;
 const blogSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   snippet: {
     type: String,
-    required: true
+    required: true,
   },
   body: {
     type: String,
-    required: true
+    required: true,
   },
   author: {
     _id: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: true,
     },
     username: {
       type: String,
-      required: true
+      required: true,
     },
     rank: {
       type: String,
-      default: 'Beginner'
+      default: 'Beginner',
     },
     avatar: {
       type: String,
-      default: '/assets/user.png'
-    }
+      default: '/assets/user.png',
+    },
   },
   blogCoverImage: {
     type: String,
     required: false,
-    default: '/assets/default_image.png'
-  }
+    default: '/assets/default_image.png',
+  },
+  likes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User', // Reference to the User model
+    },
+  ],
 }, { timestamps: true });
-
 
 // Create the Blog model
 const Blog = mongoose.model('Blog', blogSchema);

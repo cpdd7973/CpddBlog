@@ -24,4 +24,7 @@ router.get('/:id', blogController.blog_details);
 // Route to handle deleting a blog (requires authentication)
 router.delete('/:id', blogController.blog_delete);
 
+// Route to like/unlike a blog (requires authentication)
+router.post('/:id/toggle-like', blogController.toggle_like);
+
 module.exports = router;

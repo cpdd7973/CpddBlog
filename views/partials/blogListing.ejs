@@ -13,7 +13,10 @@
     <% blogs.forEach(blog => { %>
       <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
         <div class="card blog-listing-item shadow-sm">
-          <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
+          <div class="image-wrapper position-relative">
+            <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
+            <div class="like-button" id="like-btn" data-blog-id="<%= blog._id %>" data-liked="<%= blog.likes.includes(user ? user.id : '') %>" title="<%= blog.likes.length %>"></div>
+          </div>
           <div class="card-body">
             <h5 class="card-title">
               <%= blog.title %>
@@ -106,3 +109,42 @@
     </ul>
   </nav>
 <% } %>
+
+<script>
+  const likeButtonsContainer = document.querySelector('.blog-listing-wrapper');
+
+  likeButtonsContainer.addEventListener('click', async (e) => {
+    if (e.target && e.target.matches('#like-btn')) {
+      const likeButton = e.target;
+      e.preventDefault();
+      
+      const blogId = likeButton.getAttribute('data-blog-id');
+      const isLiked = likeButton.getAttribute('data-liked') === 'true';
+
+      try {
+        const response = await fetch(`/blogs/${blogId}/toggle-like`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          if (isLiked) {
+            likeButton.setAttribute('data-liked', 'false');
+          } else {
+            likeButton.setAttribute('data-liked', 'true');
+          }
+
+          likeButton.setAttribute('title', `${data.likesCount}`);
+        } else {
+          console.error('Failed to toggle like');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  });
+</script>
