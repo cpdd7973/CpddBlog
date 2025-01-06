@@ -15,7 +15,11 @@
         <div class="card blog-listing-item shadow-sm">
           <div class="image-wrapper position-relative">
             <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
-            <div class="like-button" id="like-btn" data-blog-id="<%= blog._id %>" data-liked="<%= blog.likes.includes(user ? user.id : '') %>" title="<%= blog.likes.length %>"></div>
+            <% if (user) { %>
+              <div class="like-button" id="like-btn" data-blog-id="<%= blog._id %>" data-liked="<%= blog.likes.includes(user ? user.id : '') %>" title="<%= blog.likes.length %>"></div>
+            <% } else { %>
+              <a href="/login" class="like-button" data-blog-id="<%= blog._id %>" data-liked="<%= blog.likes.includes(user ? user.id : '') %>" title="You must be logged in to like this blog"></a>
+            <% } %>
           </div>
           <div class="card-body">
             <h5 class="card-title">
