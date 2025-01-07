@@ -11,8 +11,8 @@
 <% if(blogs.length > 0) { %>
   <div class="blog-listing-wrapper">
     <% blogs.forEach(blog => { %>
-      <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
-        <div class="card blog-listing-item shadow-sm border-0">
+      <div class="card blog-listing-item shadow-sm border-0">
+        <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
           <div class="image-wrapper position-relative">
             <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
             <% if (user) { %>
@@ -21,27 +21,31 @@
               <a href="/login" class="like-button" data-blog-id="<%= blog._id %>" data-liked="<%= blog.likes.includes(user ? user.id : '') %>" title="You must be logged in to like this blog"></a>
             <% } %>
           </div>
-          <div class="card-body">
+        </a>
+        <div class="card-body">
+          <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
             <h5 class="card-title">
               <%= blog.title %>
             </h5>
-            <p class="card-text border-bottom mb-0 pb-4 position-relative" title="<%= blog.snippet %>">
+          </a>
+          <p class="card-text border-bottom mb-0 pb-4 position-relative" title="<%= blog.snippet %>">
+            <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
               <%= blog.snippet %>
-              <a href="/user/profile/<%= blog.author._id %>">
-                <img src="<%= blog.author.avatar %>" alt="user avatar" width="50" height="50"
-                  class="position-absolute rounded-circle avatar-img">
-              </a>
-            </p>
-            <a href="/user/profile/<%= blog.author._id %>">
-              <blockquote class="blockquote mb-0">
-                <footer class="blockquote-footer d-inline-block fs-6 pt-4 mb-0">
-                  <cite title="<%= blog.author.username %>" class="username">@<%= blog.author.username %> - </cite><cite><%= formatDate(blog.createdAt) %></cite>
-                </footer>
-              </blockquote>
             </a>
-          </div>
+            <a href="/user/profile/<%= blog.author._id %>">
+              <img src="<%= blog.author.avatar %>" alt="user avatar" width="50" height="50"
+                class="position-absolute rounded-circle avatar-img">
+            </a>
+          </p>
+          <a href="/user/profile/<%= blog.author._id %>">
+            <blockquote class="blockquote mb-0">
+              <footer class="blockquote-footer d-inline-block fs-6 pt-4 mb-0">
+                <cite title="<%= blog.author.username %>" class="username">@<%= blog.author.username %> - </cite><cite><%= formatDate(blog.createdAt) %></cite>
+              </footer>
+            </blockquote>
+          </a>
         </div>
-      </a>
+      </div>
     <% }) %>
   </div>
 <% } else { %>
