@@ -25,12 +25,12 @@ const getBlogs = async (req, res) => {
   try {
     // Extract and validate query parameters
     let page = parseInt(req.query.page, 10);
-    let limit = parseInt(req.query.limit, 5);
+    let limit = parseInt(req.query.limit, 10);
     const userId = req.query.userId;
 
     // Set default values if parameters are not provided or invalid
     if (isNaN(page) || page < 1) page = 1;
-    if (isNaN(limit) || limit < 1) limit = 5;
+    if (isNaN(limit) || limit < 1) limit = 10;
 
     const skip = (page - 1) * limit;
 

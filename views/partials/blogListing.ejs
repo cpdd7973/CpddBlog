@@ -12,7 +12,7 @@
   <div class="blog-listing-wrapper">
     <% blogs.forEach(blog => { %>
       <a class="text-dark text-decoration-none" href="/blogs/<%= blog._id %>">
-        <div class="card blog-listing-item shadow-sm">
+        <div class="card blog-listing-item shadow-sm border-0">
           <div class="image-wrapper position-relative">
             <img src="<%= blog.blogCoverImage %>" class="card-img-top" alt="blog cover image">
             <% if (user) { %>
