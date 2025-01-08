@@ -11,6 +11,7 @@ const app = express();
 
 // Trust the proxy
 app.set('trust proxy', true);
+mongoose.set('strictQuery', true);
 
 // Connect to MongoDB
 const dbURI = process.env.DATABASE_URL;
@@ -48,17 +49,18 @@ app.use(session({
 
 // Development session
 // app.use(session({
-//     secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
-//     resave: false,
-//     saveUninitialized: false,
-//     store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
-//     cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
+//   secret: process.env.SESSION_SECRET || 'fallbackSecretIfNotInEnv', // Provide a secret option
+//   resave: false,
+//   saveUninitialized: false,
+//   store: MongoStore.create({ mongoUrl: dbURI }), // Use MongoDB to store session data
+//   cookie: { secure: process.env.NODE_ENV === 'production' } // Set to true if using HTTPS in production
 // }));
 
 app.use((req, res, next) => {
+  res.locals.baseUrl = `${req.protocol}://${req.get('host')}`; // Set base URL globally
   res.locals.user = req.session.user || null; // Set logged-in user globally
-  res.locals.currentUser = null; // Define `user` in res.locals
-  res.locals.currentPath = req.originalUrl;   // Capture the current path
+  res.locals.currentUser = null; // Define `currentUser` globally
+  res.locals.currentPath = req.originalUrl; // Capture the current path
   next();
 });
 
