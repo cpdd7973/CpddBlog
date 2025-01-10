@@ -17,6 +17,7 @@
           <input type="text" name="title" class="form-control" placeholder="Title" id="blogTitle" value="<%= blog.title %>" required>
           <label for="title">Blog Title</label>
         </div>
+        
         <div class="mb-3">
           <label for="formFile" class="form-label">Update blog cover image here (optional):</label>
           <input class="form-control" type="file" id="blogCoverImage" name="blogCoverImage" accept="image/*">
@@ -26,12 +27,26 @@
           <input type="text" class="form-control" id="blogSnippet" name="snippet" placeholder="Snippet" value="<%= blog.snippet %>" required>
           <label for="snippet">Blog Snippet</label>
         </div>
+        <!-- Add category dropdown -->
+        <div class="form-floating mb-3">
+          <select class="form-control" name="category" id="blogCategory" required>
+            <option value="Technology" <% if (blog.category === 'Technology') { %> selected <% } %>>Technology</option>
+            <option value="Travel" <% if (blog.category === 'Travel') { %> selected <% } %>>Travel</option>
+            <option value="Food & Drink" <% if (blog.category === 'Food & Drink') { %> selected <% } %>>Food & Drink</option>
+            <option value="Health & Wellness" <% if (blog.category === 'Health & Wellness') { %> selected <% } %>>Health & Wellness</option>
+            <option value="Lifestyle" <% if (blog.category === 'Lifestyle') { %> selected <% } %>>Lifestyle</option>
+            <option value="Business & Finance" <% if (blog.category === 'Business & Finance') { %> selected <% } %>>Business & Finance</option>
+            <option value="Entertainment" <% if (blog.category === 'Entertainment') { %> selected <% } %>>Entertainment</option>
+            <option value="Education" <% if (blog.category === 'Education') { %> selected <% } %>>Education</option>
+          </select>
+          <label for="category">Blog Category</label>
+        </div>
         <div class="form-floating mb-3">
           <!-- Pre-fill the blog's current body -->
+          <label for="body">Blog Body</label>
           <textarea class="form-control" placeholder="Add blog description here" id="blogBody" name="body" style="height: 300px" required>
             <%= blog.body %>
           </textarea>
-          <label for="body">Blog Body</label>
         </div>
         <div class="w-100 d-flex justify-content-center">
           <button type="submit" class="btn btn-danger w-25 fw-bold mb-3">Update</button>
@@ -57,6 +72,7 @@
         let title = document.getElementById('blogTitle').value;
         let snippet = document.getElementById('blogSnippet').value;
         let body = tinyMCE.get('blogBody').getContent();
+        let category = document.getElementById('blogCategory').value;
         let blogCoverImage = document.querySelector("#blogCoverImage").files[0];
         
         // Use FormData to send updated data along with the optional file
@@ -64,6 +80,7 @@
         formData.append('title', title);
         formData.append('snippet', snippet);
         formData.append('body', body);
+        formData.append('category', category); // Add the category field to the FormData
         if (blogCoverImage) {
           formData.append('blogCoverImage', blogCoverImage); // Only append if the image is updated
         }
