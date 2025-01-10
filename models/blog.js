@@ -34,6 +34,20 @@ const blogSchema = new Schema({
       default: '/assets/user.png',
     },
   },
+  category: {
+    type: String,
+    enum: [
+      'Technology',
+      'Travel',
+      'Food & Drink',
+      'Health & Wellness',
+      'Lifestyle',
+      'Business & Finance',
+      'Entertainment',
+      'Education',
+    ],
+    required: true, // Ensure category is always provided
+  },
   blogCoverImage: {
     type: String,
     required: false,

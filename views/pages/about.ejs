@@ -6,8 +6,8 @@
   <div class="about container">
     <%- include('../partials/banner.ejs', { description: 'A community-driven platform where knowledge is shared, stories are told, and ideas come to life. Our mission is to bring together individuals passionate about a wide range of topics to share their insights, experiences, and expertise. Whether you’re a tech enthusiast, a traveler, a food lover, or a wellness advocate, this is the place for you.' }) %>
     <div class="join-now-banner my-4 d-flex align-items-center justify-content-center gap-lg-5 gap-3 p-4 text-white rounded-3 flex-column flex-sm-row">
-      <p class="mb-0">Join our growing community, share your knowledge, and inspire others across these diverse fields. We look forward to seeing the incredible content you’ll contribute.</p>
-      <a href="/register" class="bg-white rounded-3 fw-bold text-decoration-none shadow">Join Now</a>
+      <p class="mb-0"><% if (typeof user !== 'undefined' && user) { %><b>Start Creating Your Blog Today!</b><br>Have a passion, idea, or story to share? Our platform is the perfect place to showcase your expertise and creativity. From Technology and Travel to Food & Drink, Health & Wellness, Lifestyle, Business & Finance, Entertainment, and Education – there’s a category for everyone.<% } else { %>Join our growing community, share your knowledge, and inspire others across these diverse fields. We look forward to seeing the incredible content you’ll contribute.<% } %></p>
+      <a href="/register" class="bg-white rounded-3 fw-bold text-decoration-none shadow"><% if (typeof user !== 'undefined' && user) { %>Create Blog Now<% } else { %>Join Now<% } %></a>
     </div>
     <h2 class="text-center my-4 page-title">About Us</h2>
     <div class="accordion accordion-flush border shadow-sm rounded" id="accordionFlushExample">
@@ -44,6 +44,5 @@
     </div>
   </div>
   <%- include('../partials/footer.ejs')%>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

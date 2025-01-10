@@ -5,7 +5,7 @@
     <%- include('../partials/nav.ejs') %>
     <div class="blog-overlay">
       <div class="overlay__inner">
-          <div class="overlay__content"><span class="spinner"></span></div>
+        <div class="overlay__content"><span class="spinner"></span></div>
       </div>
     </div>
     <div class="create-blog container mt-5">
@@ -20,13 +20,26 @@
           <input class="form-control" type="file" id="blogCoverImage" name="blogCoverImage" accept="image/*">
         </div>
         <div class="form-floating mb-3">
+          <select class="form-select" id="blogCategory" name="category" required>
+            <option value="" disabled selected>Select Category</option>
+            <option value="Technology">Technology</option>
+            <option value="Travel">Travel</option>
+            <option value="Food & Drink">Food & Drink</option>
+            <option value="Health & Wellness">Health & Wellness</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Business & Finance">Business & Finance</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Education">Education</option>
+          </select>
+          <label for="category">Category</label>
+        </div>
+        <div class="form-floating mb-3">
           <input type="text" class="form-control" id="blogSnippet" name="snippet" placeholder="Snippet" required>
           <label for="snippet">Blog Snippet</label>
         </div>
         <div class="form-floating mb-3">
-          <textarea class="form-control" placeholder="Add blog description here" id="blogBody" name="body"
-            style="height: 100px" required></textarea>
           <label for="body">Blog Body</label>
+          <textarea class="form-control" placeholder="Add blog description here" id="blogBody" name="body" style="height: 100px" required></textarea>
         </div>
         <div class="w-100 d-flex justify-content-center">
           <button type="submit" class="btn btn-danger w-25 fw-bold mb-3">Submit</button>
@@ -52,6 +65,7 @@
         e.preventDefault();
         document.querySelector(".blog-overlay").style.display = "block";
         let title = document.getElementById('blogTitle').value;
+        let category = document.getElementById('blogCategory').value;
         let snippet = document.getElementById('blogSnippet').value;
         let body = tinyMCE.get('blogBody').getContent();
         let blogCoverImage = document.querySelector("#blogCoverImage").files[0];
@@ -59,6 +73,7 @@
         // Use FormData to send the file along with other data
         const formData = new FormData();
         formData.append('title', title);
+        formData.append('category', category);
         formData.append('snippet', snippet);
         formData.append('body', body);
         formData.append('author[_id]', userId);
@@ -87,7 +102,6 @@
           alert('An error occurred while creating the blog.');
         }
       });
-    </script>    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </script>
   </body>
 </html>

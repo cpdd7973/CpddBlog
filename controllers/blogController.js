@@ -124,7 +124,6 @@ const blog_details = async (req, res) => {
   const id = req.params.id;
   try {
     const blog = await Blog.findById(id).exec();
-    console.log(blog)
     if (blog) {
       res.render('blogs/details', {
         blog: blog,
@@ -159,8 +158,6 @@ const blog_create_post = async (req, res) => {
 
     let coverImageUrl = '/assets/default_image.png';
 
-    // Check if cover image is provided in the form data
-    console.log(req.file,"req.file");
     if (req.file) {
       // Upload the cover image to Cloudinary
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -309,6 +306,28 @@ const toggle_like = async (req, res) => {
   }
 };
 
+// Get  blog by category
+const getBlogsByCategory = async (req, res) => {
+  try {
+    const category = req.params.categoryName;
+
+    // Fetch blogs that match the category
+    const blogs = await Blog.find({ category }).populate('author._id', 'username avatar');
+
+    // Render the category page and pass the blogs and category name
+    res.render('pages/category', {
+      title: `Category: ${category}`,
+      req: req,
+      user: req.session.user,
+      blogs: blogs,
+      category: category,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching blogs');
+  }
+};
+
 module.exports = {
   blog_index,
   blog_details,
@@ -319,5 +338,6 @@ module.exports = {
   blog_update_post,
   blog_edit_get,
   toggle_like,
+  getBlogsByCategory,
   upload
 };

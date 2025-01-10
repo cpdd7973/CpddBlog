@@ -55,9 +55,9 @@
               <%= blog.snippet %>
             </a>
             <a href="/user/profile/<%= blog.author._id %>">
-              <img src="<%= blog.author.avatar %>" alt="user avatar" width="50" height="50"
-                class="position-absolute rounded-circle avatar-img">
+              <img src="<%= blog.author.avatar %>" alt="user avatar" width="50" height="50" class="position-absolute rounded-circle avatar-img">
             </a>
+            <a href="/blogs/category/<%= blog.category %>" class="position-absolute rounded category"><%= blog.category %></a>
           </p>
           <a href="/user/profile/<%= blog.author._id %>">
             <blockquote class="blockquote mb-0">
