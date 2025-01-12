@@ -307,24 +307,66 @@ const toggle_like = async (req, res) => {
 };
 
 // Get  blog by category
-const getBlogsByCategory = async (req, res) => {
+const getCategoryBlogs = async (req, res) => {
   try {
+    const { page = 1, limit = 10 } = req.query;
     const category = req.params.categoryName;
+    // console.log('Category:', req.params);
 
-    // Fetch blogs that match the category
-    const blogs = await Blog.find({ category }).populate('author._id', 'username avatar');
+    // Validate inputs
+    const pageNum = Math.max(parseInt(page, 10) || 1, 1);
+    const limitNum = Math.max(parseInt(limit, 10) || 10, 1);
+    const skip = (pageNum - 1) * limitNum;
 
-    // Render the category page and pass the blogs and category name
+    if (!category || typeof category !== 'string') {
+      return res.status(400).send('Invalid category');
+    }
+
+    // Fetch blogs and total count concurrently
+    const [blogs, totalBlogs] = await Promise.all([
+      Blog.find({ category })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limitNum)
+        .exec(),
+      Blog.countDocuments({ category }).exec(),
+    ]);
+
+    const totalPages = Math.ceil(totalBlogs / limitNum);
+
+    // If requested page exceeds total pages, adjust and re-fetch data
+    if (pageNum > totalPages && totalPages > 0) {
+      const adjustedSkip = (totalPages - 1) * limitNum;
+      const adjustedBlogs = await Blog.find({ category })
+        .sort({ createdAt: -1 })
+        .skip(adjustedSkip)
+        .limit(limitNum)
+        .exec();
+
+      return res.render('pages/category', {
+        title: `${category} Blogs`,
+        blogs: adjustedBlogs,
+        currentPage: totalPages,
+        totalPages,
+        limit: limitNum,
+        category,
+        req,
+      });
+    }
+
+    // Render category page
     res.render('pages/category', {
-      title: `Category: ${category}`,
-      req: req,
-      user: req.session.user,
-      blogs: blogs,
-      category: category,
+      title: `${category} Blogs`,
+      blogs,
+      currentPage: pageNum,
+      totalPages,
+      limit: limitNum,
+      category,
+      req,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error fetching blogs');
+    console.error('Error fetching category blogs:', err);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -338,6 +380,6 @@ module.exports = {
   blog_update_post,
   blog_edit_get,
   toggle_like,
-  getBlogsByCategory,
+  getCategoryBlogs,
   upload
 };

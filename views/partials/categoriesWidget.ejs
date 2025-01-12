@@ -1,0 +1,79 @@
+<% 
+  const categories = [
+    {
+      title: "Technology",
+      description: "Stay updated with the latest advancements in AI, software, and cutting-edge innovations transforming the world.",
+      image: "/images/technology.jpg",
+      link: "/blogs/category/Technology",
+      buttonText: "Discover Tech Trends"
+    },
+    {
+      title: "Travel",
+      description: "Embark on journeys to breathtaking destinations and uncover hidden gems to inspire your next adventure.",
+      image: "/images/travel.jpg",
+      link: "/blogs/category/Travel",
+      buttonText: "Plan Your Next Adventure"
+    },
+    {
+      title: "Food & Drink",
+      description: "Dive into mouthwatering recipes, culinary tips, and the best places to eat and drink around the globe.",
+      image: "/images/food-drink.jpg",
+      link: "/blogs/category/Food & Drink",
+      buttonText: "Taste the World"
+    },
+    {
+      title: "Health & Wellness",
+      description: "Discover expert advice on fitness, mental health, nutrition, and self-care for a healthier you.",
+      image: "/images/health-wellness.jpg",
+      link: "/blogs/category/Health & Wellness",
+      buttonText: "Prioritize Wellness"
+    },
+    {
+      title: "Lifestyle",
+      description: "From fashion to productivity hacks, find inspiration to elevate every aspect of your lifestyle.",
+      image: "/images/lifestyle.jpg",
+      link: "/blogs/category/Lifestyle",
+      buttonText: "Elevate Your Life"
+    },
+    {
+      title: "Business & Finance",
+      description: "Gain insights into entrepreneurship, market trends, and strategies to grow your wealth and career.",
+      image: "/images/business-finance.jpg",
+      link: "/blogs/category/Business & Finance",
+      buttonText: "Achieve Your Goals"
+    },
+    {
+      title: "Entertainment",
+      description: "Keep up with the latest movies, music, TV shows, and celebrity news in the world of entertainment.",
+      image: "/images/entertainment.jpg",
+      link: "/blogs/category/Entertainment",
+      buttonText: "Stay Entertained"
+    },
+    {
+      title: "Education",
+      description: "Access valuable resources, learning tips, and insights to fuel your personal and professional growth.",
+      image: "/images/education.jpg",
+      link: "/blogs/category/Education",
+      buttonText: "Expand Your Horizons"
+    }
+  ];
+%>
+
+<div class="container mt-5">
+  <h2 class="text-center my-4 page-title">Explore Our Categories</h2>
+  <div class="d-flex justify-content-between g-4 categories-widget-wrapper">
+    <% categories.forEach(category => { %>
+      <a href="<%= category.link %>" class="text-decoration-none categories-widget-item mb-4">
+        <!-- <div class="col"> -->
+          <div class="card h-100 border-0">
+            <!-- <img src="<%= category.image %>" class="card-img-top" alt="<%= category.title %>"> -->
+            <div class="card-body">
+              <h5 class="card-title"><%= category.title %></h5>
+              <p class="card-text"><%= category.description %></p>
+            </div>
+          </div>
+        <!-- </div> -->
+      </a>
+    <% }) %>
+  </div>
+</div>

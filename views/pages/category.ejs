@@ -3,21 +3,8 @@
   <%- include('../partials/head.ejs') %>
   <body>
     <%- include('../partials/nav.ejs') %>
-    <div class="category-page container mt-5">
-      <h2 class="page-title">Posts in <%= category %> Category</h2>
-      <% if (blogs.length > 0) { %>
-        <div class="blog-list">
-          <% blogs.forEach(blog => { %>
-            <div class="blog-item mb-4">
-              <h3><a href="/blogs/<%= blog._id %>"><%= blog.title %></a></h3>
-              <p><%= blog.snippet %></p>
-              <p>By: <%= blog.author.username %></p>
-            </div>
-          <% }) %>
-        </div>
-      <% } else { %>
-        <p>No posts available in this category.</p>
-      <% } %>
+    <div class="categories-container container">
+      <%- include('../partials/blogListing.ejs', { heading: category + ' Blogs', blogs: blogs }) %>
     </div>
     <%- include('../partials/footer.ejs') %>
   </body>

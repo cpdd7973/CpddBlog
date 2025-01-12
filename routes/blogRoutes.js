@@ -27,6 +27,6 @@ router.delete('/:id', blogController.blog_delete);
 // Route to like/unlike a blog (requires authentication)
 router.post('/:id/toggle-like', blogController.toggle_like);
 
-router.get('/category/:categoryName', blogController.getBlogsByCategory);
+router.get('/category/:categoryName', blogController.getCategoryBlogs);
 
 module.exports = router;
