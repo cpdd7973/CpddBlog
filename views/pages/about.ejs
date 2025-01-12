@@ -6,10 +6,6 @@
   <div class="about container">
     <%- include('../partials/banner.ejs', { description: 'A community-driven platform where knowledge is shared, stories are told, and ideas come to life. Our mission is to bring together individuals passionate about a wide range of topics to share their insights, experiences, and expertise. Whether you’re a tech enthusiast, a traveler, a food lover, or a wellness advocate, this is the place for you.' }) %>
     <%- include('../partials/categoriesWidget.ejs') %>
-    <div class="join-now-banner my-4 d-flex align-items-center justify-content-center gap-lg-5 gap-3 p-4 text-white rounded-3 flex-column flex-sm-row">
-      <p class="mb-0"><% if (typeof user !== 'undefined' && user) { %><b>Start Creating Your Blog Today!</b><br>Have a passion, idea, or story to share? Our platform is the perfect place to showcase your expertise and creativity. From Technology and Travel to Food & Drink, Health & Wellness, Lifestyle, Business & Finance, Entertainment, and Education – there’s a category for everyone.<% } else { %>Join our growing community, share your knowledge, and inspire others across these diverse fields. We look forward to seeing the incredible content you’ll contribute.<% } %></p>
-      <a <% if (typeof user !== 'undefined' && user) { %>href="/blogs/create"<% } else { %>href="/register"<% } %> class="bg-white rounded-3 fw-bold text-decoration-none shadow"><% if (typeof user !== 'undefined' && user) { %>Create Blog Now<% } else { %>Join Now<% } %></a>
-    </div>
     <h2 class="text-center my-4 page-title">About Us</h2>
     <div class="accordion accordion-flush border shadow-sm rounded" id="accordionFlushExample">
       <div class="accordion-item rounded-top">
@@ -42,6 +38,10 @@
           <div class="accordion-body"><strong>cpdd Blogs</strong> isn’t just about writing; it’s about connecting with like-minded individuals, learning new things, and growing together. Through meaningful interactions and a wealth of resources, you’ll expand your horizons and make lasting connections within the community.</div>
         </div>
       </div>
+    </div>
+    <div class="join-now-banner my-4 d-flex align-items-center justify-content-center gap-lg-5 gap-3 p-4 text-white rounded-3 flex-column flex-sm-row">
+      <p class="mb-0"><% if (typeof user !== 'undefined' && user) { %><b>Start Creating Your Blog Today!</b><br>Have a passion, idea, or story to share? Our platform is the perfect place to showcase your expertise and creativity. From Technology and Travel to Food & Drink, Health & Wellness, Lifestyle, Business & Finance, Entertainment, and Education – there’s a category for everyone.<% } else { %>Join our growing community, share your knowledge, and inspire others across these diverse fields. We look forward to seeing the incredible content you’ll contribute.<% } %></p>
+      <a <% if (typeof user !== 'undefined' && user) { %>href="/blogs/create"<% } else { %>href="/register"<% } %> class="bg-white rounded-3 fw-bold text-decoration-none shadow"><% if (typeof user !== 'undefined' && user) { %>Create Blog Now<% } else { %>Join Now<% } %></a>
     </div>
   </div>
   <%- include('../partials/footer.ejs')%>
