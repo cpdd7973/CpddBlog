@@ -151,10 +151,11 @@
 
 .categories-widget-wrapper {
   flex-wrap: wrap;
+  gap: 30px;
 }
 
 .categories-widget-item {
-  width: calc((100% - 4.5rem)/4);
+  width: calc((100% - 90px)/4);
 }
 
 .categories-widget-item:hover .card{
@@ -422,6 +423,9 @@ p, h1, h2, h3, h4 {
     max-width: 100%;
     height: auto;
   }
+  .categories-widget-item {
+    width: calc((100% - 60px)/3);
+  }
   .cpdd-blog-banner {
     padding-top: 230px !important;
     background-position: top;
@@ -439,6 +443,9 @@ p, h1, h2, h3, h4 {
   .blog-content-wrapper {
     margin-right: 0;
   }
+  .categories-widget-item {
+    width: calc((100% - 30px)/2);
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -447,5 +454,8 @@ p, h1, h2, h3, h4 {
   }
   .cpdd-blog-banner {
     padding-top: 180px !important;
+  }
+  .categories-widget-item {
+    width: 100%;
   }
 }

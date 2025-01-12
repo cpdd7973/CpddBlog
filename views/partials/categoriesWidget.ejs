@@ -59,11 +59,11 @@
   ];
 %>
 
-<div class="container mt-5">
+<!-- <div class="container mt-5"> -->
   <h2 class="text-center my-4 page-title">Explore Our Categories</h2>
-  <div class="d-flex justify-content-between g-4 categories-widget-wrapper">
+  <div class="d-flex categories-widget-wrapper">
     <% categories.forEach(category => { %>
-      <a href="<%= category.link %>" class="text-decoration-none categories-widget-item mb-4">
+      <a href="<%= category.link %>" class="text-decoration-none categories-widget-item">
         <!-- <div class="col"> -->
           <div class="card h-100 border-0">
             <!-- <img src="<%= category.image %>" class="card-img-top" alt="<%= category.title %>"> -->
@@ -76,4 +76,4 @@
       </a>
     <% }) %>
   </div>
-</div>
+<!-- </div> -->
