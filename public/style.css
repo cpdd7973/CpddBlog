@@ -400,6 +400,14 @@ p, h1, h2, h3, h4 {
   text-overflow: ellipsis;
 }
 
+.details .dropdown-toggle::after {
+  display: none;
+}
+
+.action-wrapper li:hover {
+  background-color: #d0def5;
+}
+
 @media screen and (min-width: 992px) {
   .nav-link.active {
     border-color: var(--secondry-color);
