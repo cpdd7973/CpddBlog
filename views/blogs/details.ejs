@@ -2,6 +2,32 @@
 <html lang="en">
 <%- include("../partials/head.ejs") %>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "<%= blog.title.replace(/"/g, '&quot;') %>",
+  "description": "<%= (blog.snippet || blog.body.substring(0, 155)).replace(/"/g, '&quot;') %>",
+  "image": "<%= blog.blogCoverImage %>",
+  "author": {
+    "@type": "Person",
+    "name": "<%= blog.author.username %>"
+  },
+  "datePublished": "<%= blog.createdAt.toISOString() %>",
+  "dateModified": "<%= blog.updatedAt.toISOString() %>",
+  "publisher": {
+    "@type": "Organization",
+    "name": "CpddBlog",
+    "url": "https://cpddblog.onrender.com"
+  },
+  "url": "https://cpddblog.onrender.com/blogs/<%= blog._id %>",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://cpddblog.onrender.com/blogs/<%= blog._id %>"
+  }
+}
+</script>
+
 <body>
   <%- include("../partials/nav.ejs") %>
 
