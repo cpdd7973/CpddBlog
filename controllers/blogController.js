@@ -128,7 +128,12 @@ const blog_details = async (req, res) => {
       res.render('blogs/details', {
         blog: blog,
         title: 'Blog Details',
-        user: req.session.user || null,  // Pass user info to the view
+        metaTitle: `${blog.title} | CpddBlog`,
+        metaDescription: blog.snippet || blog.body.substring(0, 155),
+        metaImage: blog.blogCoverImage && !blog.blogCoverImage.startsWith('/') ? blog.blogCoverImage : 'https://cpddblog.onrender.com/assets/og-default.jpg',
+        metaUrl: `https://cpddblog.onrender.com/blogs/${blog._id}`,
+        ogType: 'article',
+        user: req.session.user || null,
         req: req
       });
     } else {

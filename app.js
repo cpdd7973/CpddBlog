@@ -7,6 +7,7 @@ const path = require('path'); // Import the path module
 const MongoStore = require('connect-mongo'); // Import connect-mongo
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes');
+const sitemapRoutes = require('./routes/sitemapRoutes');
 const app = express();
 
 // Trust the proxy
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(express.json());
+app.use('/', sitemapRoutes);
 
 // Session middleware Production
 // app.use(session({

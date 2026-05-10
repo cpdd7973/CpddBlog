@@ -8,5 +8,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Mingzat&family=Sofadi+One&display=swap" rel="stylesheet">
-  <title>Blog | <%= title %></title>
+  <title><%= typeof metaTitle !== 'undefined' ? metaTitle : 'CpddBlog - Explore Stories & Ideas' %></title>
+  <meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'CpddBlog is a community platform for sharing stories, ideas, and knowledge across Technology, Travel, Food, Health, and more.' %>">
+  <meta name="keywords" content="<%= typeof metaKeywords !== 'undefined' ? metaKeywords : 'blog, technology, travel, food, health, lifestyle' %>">
+
+  <!-- Open Graph (for social sharing & AI crawlers) -->
+  <meta property="og:title" content="<%= typeof metaTitle !== 'undefined' ? metaTitle : 'CpddBlog' %>">
+  <meta property="og:description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'Explore stories and ideas on CpddBlog.' %>">
+  <meta property="og:image" content="<%= typeof metaImage !== 'undefined' ? metaImage : 'https://cpddblog.onrender.com/assets/og-default.jpg' %>">
+  <meta property="og:url" content="<%= typeof metaUrl !== 'undefined' ? metaUrl : 'https://cpddblog.onrender.com' %>">
+  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= typeof metaTitle !== 'undefined' ? metaTitle : 'CpddBlog' %>">
+  <meta name="twitter:description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'Explore stories and ideas on CpddBlog.' %>">
+  <meta name="twitter:image" content="<%= typeof metaImage !== 'undefined' ? metaImage : 'https://cpddblog.onrender.com/assets/og-default.jpg' %>">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="<%= typeof metaUrl !== 'undefined' ? metaUrl : 'https://cpddblog.onrender.com' %>">
 </head>

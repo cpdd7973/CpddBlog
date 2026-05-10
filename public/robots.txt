@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /user/
+Disallow: /blogs/create
+Disallow: /blogs/edit/
+
+Sitemap: https://cpddblog.onrender.com/sitemap.xml
