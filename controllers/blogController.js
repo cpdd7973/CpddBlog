@@ -111,7 +111,10 @@ const blog_index = async (req, res) => {
       title: 'All Blogs',
       blogs: blogs,
       user: user,
-      req: req
+      req: req,
+      metaTitle: 'All Blogs | CpddBlog',
+      metaDescription: 'Browse all blog posts on CpddBlog — Technology, Travel, Food, Health, Lifestyle and more.',
+      metaUrl: 'https://cpddblog.onrender.com/blogs',
     });
   } catch (err) {
     console.log(err);
@@ -356,6 +359,9 @@ const getCategoryBlogs = async (req, res) => {
         limit: limitNum,
         category,
         req,
+        metaTitle: `${category} Blogs | CpddBlog`,
+        metaDescription: `Explore the best ${category} articles and stories on CpddBlog.`,
+        metaUrl: `https://cpddblog.onrender.com/blogs/category/${encodeURIComponent(category)}`,
       });
     }
 
