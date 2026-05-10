@@ -69,6 +69,11 @@ app.get('/', (req, res) => {
   res.redirect('/home');
 });
 
+// ─── Health Check ─────────────────────────────────────────────────────────────
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.use('/blogs', blogRoutes);
 app.use('/user', userRoutes);
 
