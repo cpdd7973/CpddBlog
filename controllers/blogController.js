@@ -374,6 +374,9 @@ const getCategoryBlogs = async (req, res) => {
       limit: limitNum,
       category,
       req,
+      metaTitle: `${category} Blogs | CpddBlog`,
+      metaDescription: `Explore the best ${category} articles and stories on CpddBlog.`,
+      metaUrl: `https://cpddblog.onrender.com/blogs/category/${encodeURIComponent(category)}`,
     });
   } catch (err) {
     console.error('Error fetching category blogs:', err);
